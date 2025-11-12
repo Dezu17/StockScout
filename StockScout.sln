@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockScout.Api", "StockScout.Api\StockScout.Api.csproj", "{46EE732E-3B42-480E-B521-6DDA57BC7C8D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46EE732E-3B42-480E-B521-6DDA57BC7C8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46EE732E-3B42-480E-B521-6DDA57BC7C8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46EE732E-3B42-480E-B521-6DDA57BC7C8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46EE732E-3B42-480E-B521-6DDA57BC7C8D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {865F6F85-D0CF-4DA1-9303-D279C2D38153}
+	EndGlobalSection
+EndGlobal
