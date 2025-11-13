@@ -74,4 +74,13 @@ What it does on each push / PR to `main`:
 1. Checks out code.
 2. Builds backend (.NET 8).
 3. Installs and builds frontend (Node + Vite).
-4. Runs a simple secret pattern check.
+4. Verifies .NET formatting and runs lint + Prettier checks.
+5. Runs a simple secret pattern check.
+
+## Code Quality (Lint & Formatting)
+Frontend:
+- Lint: `npm run lint` (ESLint with TypeScript + React rules)
+- Format: `npm run format` (Prettier write) / `npm run format:check` (CI verification)
+
+Backend:
+- Format verification: `dotnet format --verify-no-changes` (run manually or rely on CI step)
