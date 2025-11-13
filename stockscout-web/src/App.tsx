@@ -1,11 +1,29 @@
 import { useState } from 'react';
-import { Input, Button, Spinner, makeStyles, Title1, Toaster, useToastController, Toast, ToastTitle, useId } from '@fluentui/react-components';
+import {
+  Input,
+  Button,
+  Spinner,
+  makeStyles,
+  Title1,
+  Toaster,
+  useToastController,
+  Toast,
+  ToastTitle,
+  useId,
+} from '@fluentui/react-components';
 import { QuoteCard } from './components/QuoteCard';
 import type { QuoteDto } from './types';
 
 const useStyles = makeStyles({
-  layout: { display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1.5rem', maxWidth: '900px', margin: '0 auto' },
-  formRow: { display: 'flex', gap: '0.5rem', alignItems: 'center' }
+  layout: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
+    padding: '1.5rem',
+    maxWidth: '900px',
+    margin: '0 auto',
+  },
+  formRow: { display: 'flex', gap: '0.5rem', alignItems: 'center' },
 });
 
 export const App: React.FC = () => {
@@ -27,12 +45,7 @@ export const App: React.FC = () => {
       setQuote(data);
     } catch (e: unknown) {
       // Narrow the error to extract a message safely
-      const message =
-        e instanceof Error
-          ? e.message
-          : typeof e === 'string'
-          ? e
-          : 'Unknown error';
+      const message = e instanceof Error ? e.message : typeof e === 'string' ? e : 'Unknown error';
       dispatchToast(
         <Toast appearance="inverted">
           <ToastTitle>Failed to load quote: {message}</ToastTitle>

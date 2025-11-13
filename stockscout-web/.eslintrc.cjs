@@ -10,12 +10,12 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier'
+    'prettier',
   ],
   rules: {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'react/prop-types': 'off',
   },
-  ignorePatterns: ['dist/', 'node_modules/']
+  ignorePatterns: ['dist/', 'node_modules/'],
 };
