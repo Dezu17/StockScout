@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Caching.Memory;
 using StockScout.Api;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddMemoryCache();
 builder.Services.Configure<AlphaVantageOptions>(builder.Configuration.GetSection("AlphaVantage"));
 builder.Services.AddSingleton<AlphaVantageClient>();
 
@@ -46,17 +48,20 @@ public class AlphaVantageOptions
 {
     public string? ApiKey { get; set; }
     public string BaseUrl { get; set; } = "https://www.alphavantage.co";
+    public int CacheTtlSeconds { get; set; }
 }
 
 public class AlphaVantageClient
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly AlphaVantageOptions _options;
+    private IMemoryCache _cache;
 
-    public AlphaVantageClient(IHttpClientFactory httpClientFactory, Microsoft.Extensions.Options.IOptions<AlphaVantageOptions> options)
+    public AlphaVantageClient(IHttpClientFactory httpClientFactory, Microsoft.Extensions.Options.IOptions<AlphaVantageOptions> options, IMemoryCache cache)
     {
         _httpClientFactory = httpClientFactory;
         _options = options.Value;
+        _cache = cache;
     }
 
     public async Task<QuoteDto?> GetQuoteAsync(string symbol, CancellationToken ct = default)
@@ -64,12 +69,27 @@ public class AlphaVantageClient
         if (string.IsNullOrEmpty(_options.ApiKey))
             throw new InvalidOperationException("AlphaVantage ApiKey not configured. Set AlphaVantage:ApiKey in appsettings or environment (ALPHAVANTAGE__APIKEY).");
 
+        var cacheKey = $"quote:{symbol}";
+        if (_cache.TryGetValue(cacheKey, out QuoteDto? cachedData) && cachedData is not null)
+            return cachedData;
+
         var url = $"{_options.BaseUrl}/query?function=GLOBAL_QUOTE&symbol={Uri.EscapeDataString(symbol)}&apikey={_options.ApiKey}";
         var client = _httpClientFactory.CreateClient();
         using var resp = await client.GetAsync(url, ct);
         if (!resp.IsSuccessStatusCode) return null;
         await using var s = await resp.Content.ReadAsStreamAsync(ct);
         using var doc = await JsonDocument.ParseAsync(s, cancellationToken: ct);
-        return QuoteMapper.MapFromGlobalQuote(doc);
+        var dto = QuoteMapper.MapFromGlobalQuote(doc);
+        if (dto is not null)
+        {
+            _cache.Set(
+                cacheKey,
+                dto,
+                new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(Math.Max(1, _options.CacheTtlSeconds))
+                });
+        }
+        return dto;
     }
 }
