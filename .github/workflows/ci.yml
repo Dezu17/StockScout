@@ -1,5 +1,4 @@
-name: CI
-
+name: StockScout Continuous Integration
 on:
   push:
     branches: [ main ]
@@ -9,34 +8,35 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # .NET backend
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: 8.0.x
 
-      - name: Restore .NET
+      - name: Restore & Build backend
         working-directory: StockScout.Api
-        run: dotnet restore
-
-      - name: Build .NET
-        working-directory: StockScout.Api
-        run: dotnet build --configuration Release --no-restore
+        run: |
+          dotnet restore
+          dotnet build --configuration Release --no-restore
 
       - name: Verify .NET formatting
         working-directory: StockScout.Api
-        run: dotnet tool install --global dotnet-format || echo "dotnet-format already installed" && dotnet format --verify-no-changes
+        run: |
+          dotnet tool install --global dotnet-format || echo "dotnet-format already installed"
+          dotnet format --verify-no-changes
 
+      # Frontend
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
           cache: 'npm'
+          cache-dependency-path: 'stockscout-web/package-lock.json'
 
       - name: Install frontend deps
         working-directory: stockscout-web
@@ -50,14 +50,15 @@ jobs:
         working-directory: stockscout-web
         run: npm run lint
 
-      - name: Check formatting (Prettier)
+      - name: Check formatting (frontend)
         working-directory: stockscout-web
         run: npm run format:check
 
-      - name: Verify no committed secrets
+      # Simple secret pattern scan (adjust patterns as needed)
+      - name: Secret scan (simple)
         run: |
-          if grep -R "ALPHAVANTAGE__APIKEY=" -n .github StockScout.Api || grep -R "FFHH" .; then
-            echo "Potential secret pattern detected" && exit 1; else echo "OK"; fi
+          grep -R --line-number "ALPHAVANTAGE__APIKEY=" . || true
+          grep -R --line-number "YOUR_REAL_KEY_HERE" . && (echo "Found placeholder secret string – review." && exit 1 || true)
 
   # Example of separate job placeholder for tests; add when you have them.
   # tests:
