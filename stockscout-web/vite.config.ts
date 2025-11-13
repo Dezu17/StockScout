@@ -7,10 +7,10 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     server: {
       port: 5173,
-      open: true
+      open: true,
     },
     define: {
-      __API_BASE__: JSON.stringify(env.VITE_API_BASE || 'http://localhost:5005/api')
-    }
+      __API_BASE__: JSON.stringify(env.VITE_API_BASE || 'http://localhost:5005/api'),
+    },
   };
 });
