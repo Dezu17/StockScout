@@ -66,3 +66,12 @@ Backend calls Alpha Vantage `GLOBAL_QUOTE` endpoint and normalizes the response 
 ALPHAVANTAGE__APIKEY
 ```
 (.NET maps double underscore to `:`.)
+
+## Continuous Integration (CI)
+GitHub Actions workflow: `.github/workflows/ci.yml`
+
+What it does on each push / PR to `main`:
+1. Checks out code.
+2. Builds backend (.NET 8).
+3. Installs and builds frontend (Node + Vite).
+4. Runs a simple secret pattern check.
