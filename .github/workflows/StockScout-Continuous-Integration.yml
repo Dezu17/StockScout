@@ -54,11 +54,15 @@ jobs:
         working-directory: stockscout-web
         run: npm run format:check
 
-      # Simple secret pattern scan (adjust patterns as needed)
-      - name: Secret scan (simple)
+      # Secret pattern scan
+      - name: Secret scan
         run: |
-          grep -R --line-number "ALPHAVANTAGE__APIKEY=" . || true
-          grep -R --line-number "YOUR_REAL_KEY_HERE" . && (echo "Found placeholder secret string – review." && exit 1 || true)
+          grep -R --line-number "ALPHAVANTAGE__APIKEY=" . --exclude README.md --exclude-dir node_modules --exclude-dir .git || true
+          if grep -R --line-number "YOUR_REAL_KEY_HERE" . --exclude README.md --exclude-dir node_modules --exclude-dir .git; then
+            echo "Placeholder string appears outside README – please remove."; exit 1;
+          else
+            echo "No misplaced placeholders detected.";
+          fi
 
   # Example of separate job placeholder for tests; add when you have them.
   # tests:
