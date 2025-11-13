@@ -28,6 +28,10 @@ jobs:
         working-directory: StockScout.Api
         run: dotnet build --configuration Release --no-restore
 
+      - name: Verify .NET formatting
+        working-directory: StockScout.Api
+        run: dotnet tool install --global dotnet-format || echo "dotnet-format already installed" && dotnet format --verify-no-changes
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -41,6 +45,14 @@ jobs:
       - name: Build frontend
         working-directory: stockscout-web
         run: npm run build
+
+      - name: Lint frontend
+        working-directory: stockscout-web
+        run: npm run lint
+
+      - name: Check formatting (Prettier)
+        working-directory: stockscout-web
+        run: npm run format:check
 
       - name: Verify no committed secrets
         run: |
