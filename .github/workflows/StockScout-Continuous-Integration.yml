@@ -57,9 +57,9 @@ jobs:
       # Secret pattern scan
       - name: Secret scan
         run: |
-          grep -R --line-number "ALPHAVANTAGE__APIKEY=" . --exclude README.md --exclude-dir node_modules --exclude-dir .git || true
-          if grep -R --line-number "YOUR_REAL_KEY_HERE" . --exclude README.md --exclude-dir node_modules --exclude-dir .git; then
-            echo "Placeholder string appears outside README – please remove."; exit 1;
+          grep -R --line-number "ALPHAVANTAGE__APIKEY=" . --exclude README.md --exclude-dir node_modules --exclude-dir .git --exclude '.github/workflows/*.yml' || true
+          if grep -R --line-number "YOUR_REAL_KEY_HERE" . --exclude README.md --exclude-dir node_modules --exclude-dir .git --exclude '.github/workflows/*.yml'; then
+            echo "Found placeholder secret string – review."; exit 1;
           else
             echo "No misplaced placeholders detected.";
           fi
