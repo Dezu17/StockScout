@@ -30,6 +30,9 @@ jobs:
           dotnet tool install --global dotnet-format || echo "dotnet-format already installed"
           dotnet format --verify-no-changes
 
+      - name: Run unit tests
+        run: dotnet test StockScout.Api.Tests/StockScout.Api.Tests.csproj --configuration Release --no-build --verbosity minimal
+
       # Frontend
       - name: Setup Node
         uses: actions/setup-node@v4
