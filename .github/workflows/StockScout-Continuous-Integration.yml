@@ -57,11 +57,14 @@ jobs:
       # Secret pattern scan
       - name: Secret scan
         run: |
-          grep -R --line-number "ALPHAVANTAGE__APIKEY=" . --exclude README.md --exclude-dir node_modules --exclude-dir .git --exclude '.github/workflows/*.yml' || true
-          if grep -R --line-number "YOUR_REAL_KEY_HERE" . --exclude README.md --exclude-dir node_modules --exclude-dir .git --exclude '.github/workflows/*.yml'; then
-            echo "Found placeholder secret string – review."; exit 1;
+          # Look for real (non-placeholder) key assignments excluding README and workflow files
+          if grep -R -E --line-number 'ALPHAVANTAGE__APIKEY=(?!YOUR_REAL_KEY_HERE)[A-Za-z0-9]{8,}' . \
+              --exclude README.md \
+              --exclude-dir node_modules --exclude-dir .git --exclude '.github/workflows/*.yml'; then
+            echo "❌ Potential real Alpha Vantage key committed. Rotate and remove.";
+            exit 1;
           else
-            echo "No misplaced placeholders detected.";
+            echo "✅ No real Alpha Vantage key detected.";
           fi
 
   # Example of separate job placeholder for tests; add when you have them.
