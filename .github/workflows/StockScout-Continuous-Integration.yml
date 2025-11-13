@@ -1,4 +1,4 @@
-name: StockScout Continuous Integration
+name: StockScout-Continuous-Integration
 on:
   push:
     branches: [ main ]
