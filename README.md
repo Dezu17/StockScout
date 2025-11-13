@@ -26,7 +26,7 @@ From the repo root:
 cd StockScout.Api
 dotnet restore; dotnet run
 ```
-Default URL (launchSettings): http://localhost:5005
+Default URL: http://localhost:5005
 Swagger UI: http://localhost:5005/swagger
 Health check: http://localhost:5005/api/health
 
@@ -65,12 +65,11 @@ Backend calls Alpha Vantage `GLOBAL_QUOTE` endpoint and normalizes the response 
 ```
 ALPHAVANTAGE__APIKEY
 ```
-(.NET maps double underscore to `:`.)
 
 ## Continuous Integration (CI)
 GitHub Actions workflow: `.github/workflows/ci.yml`
 
-What it does on each push / PR to `main`:
+What it does on each push to `main`:
 1. Checks out code.
 2. Builds backend (.NET 8).
 3. Installs and builds frontend (Node + Vite).
