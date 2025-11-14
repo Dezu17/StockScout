@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using StockScout.Api;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,6 +58,16 @@ app.UseAuthorization();
 
 app.MapGet("/api/health", () => new { status = "ok", timeUtc = DateTime.UtcNow })
     .WithName("Health");
+
+// Protected test endpoint to verify Firebase authentication
+app.MapGet("/api/secure-test", (ClaimsPrincipal user) =>
+{
+    var email = user.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+    var userId = user.Claims.FirstOrDefault(c => c.Type == "user_id")?.Value;
+    return new { message = "authenticated", email, userId };
+})
+.RequireAuthorization()
+.WithName("SecureTest");
 
 app.MapGet("/api/quote/{symbol}", async (string symbol, AlphaVantageClient client) =>
 {
