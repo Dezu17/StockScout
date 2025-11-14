@@ -15,7 +15,7 @@ const AuthenticationContext = createContext<AuthenticationContextType>({
   loading: true,
   token: null,
   refreshToken: async () => {},
-  logout: async () => {}
+  logout: async () => {},
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
