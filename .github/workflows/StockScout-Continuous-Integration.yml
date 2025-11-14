@@ -39,22 +39,22 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: 'stockscout-web/package-lock.json'
+          cache-dependency-path: 'StockScout.Web/package-lock.json'
 
       - name: Install frontend deps
-        working-directory: stockscout-web
+        working-directory: StockScout.Web
         run: npm ci
 
       - name: Build frontend
-        working-directory: stockscout-web
+        working-directory: StockScout.Web
         run: npm run build
 
       - name: Lint frontend
-        working-directory: stockscout-web
+        working-directory: StockScout.Web
         run: npm run lint
 
       - name: Check formatting (frontend)
-        working-directory: stockscout-web
+        working-directory: StockScout.Web
         run: npm run format:check
 
       # Secret pattern scan
@@ -64,10 +64,10 @@ jobs:
           if grep -R -E --line-number 'ALPHAVANTAGE__APIKEY=(?!YOUR_REAL_KEY_HERE)[A-Za-z0-9]{8,}' . \
               --exclude README.md \
               --exclude-dir node_modules --exclude-dir .git --exclude '.github/workflows/*.yml'; then
-            echo "❌ Potential real Alpha Vantage key committed. Rotate and remove.";
+            echo "Potential real Alpha Vantage key committed. Rotate and remove.";
             exit 1;
           else
-            echo "✅ No real Alpha Vantage key detected.";
+            echo "No real Alpha Vantage key detected.";
           fi
 
   # Example of separate job placeholder for tests; add when you have them.
