@@ -1,6 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using StockScout.Api;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,27 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
 builder.Services.Configure<AlphaVantageOptions>(builder.Configuration.GetSection("AlphaVantage"));
 builder.Services.AddSingleton<AlphaVantageClient>();
+
+// Firebase JWT authentication setup (only if ProjectId configured)
+var firebaseProjectId = builder.Configuration["Firebase:ProjectId"];
+if (!string.IsNullOrWhiteSpace(firebaseProjectId))
+{
+    builder.Services
+        .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            options.Authority = $"https://securetoken.google.com/{firebaseProjectId}";
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = $"https://securetoken.google.com/{firebaseProjectId}",
+                ValidateAudience = true,
+                ValidAudience = firebaseProjectId,
+                ValidateLifetime = true
+            };
+        });
+    builder.Services.AddAuthorization();
+}
 
 builder.Services.AddCors(options =>
 {
@@ -27,6 +50,10 @@ var app = builder.Build();
 app.UseCors("dev");
 app.UseSwagger();
 app.UseSwaggerUI();
+
+// Auth middleware (will noop if not configured above)
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapGet("/api/health", () => new { status = "ok", timeUtc = DateTime.UtcNow })
     .WithName("Health");
