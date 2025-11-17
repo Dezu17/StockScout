@@ -31,11 +31,11 @@ const useStyles = makeStyles({
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading } = useAuth();
-  
+
   if (loading) {
     return <Spinner label="Loading..." />;
   }
-  
+
   return user ? <>{children}</> : <Navigate to="/login" replace />;
 };
 
@@ -91,17 +91,17 @@ const Dashboard: React.FC = () => {
 
 export const App: React.FC = () => {
   const { user, loading } = useAuth();
-  
+
   if (loading) {
     return <Spinner label="Loading..." />;
   }
-  
+
   return (
     <Router>
       <Routes>
-        <Route 
-          path="/login" 
-          element={user ? <Navigate to="/" replace /> : <AuthenticationPage />} 
+        <Route
+          path="/login"
+          element={user ? <Navigate to="/" replace /> : <AuthenticationPage />}
         />
         <Route
           path="/"
