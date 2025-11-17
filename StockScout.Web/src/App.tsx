@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import {
   Input,
   Button,
@@ -11,7 +12,9 @@ import {
   ToastTitle,
   useId,
 } from '@fluentui/react-components';
+import { AuthenticationPage } from './pages/AuthenticationPage';
 import { QuoteCard } from './components/QuoteCard';
+import { useAuth } from './AuthenticationContext';
 import type { QuoteDto } from './types';
 
 const useStyles = makeStyles({
@@ -26,7 +29,17 @@ const useStyles = makeStyles({
   formRow: { display: 'flex', gap: '0.5rem', alignItems: 'center' },
 });
 
-export const App: React.FC = () => {
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user, loading } = useAuth();
+  
+  if (loading) {
+    return <Spinner label="Loading..." />;
+  }
+  
+  return user ? <>{children}</> : <Navigate to="/login" replace />;
+};
+
+const Dashboard: React.FC = () => {
   const styles = useStyles();
   const [symbol, setSymbol] = useState('MSFT');
   const [loading, setLoading] = useState(false);
@@ -73,5 +86,32 @@ export const App: React.FC = () => {
       {loading && <Spinner label="Loading quote" />}
       {quote && <QuoteCard quote={quote} />}
     </div>
+  );
+};
+
+export const App: React.FC = () => {
+  const { user, loading } = useAuth();
+  
+  if (loading) {
+    return <Spinner label="Loading..." />;
+  }
+  
+  return (
+    <Router>
+      <Routes>
+        <Route 
+          path="/login" 
+          element={user ? <Navigate to="/" replace /> : <AuthenticationPage />} 
+        />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
   );
 };
