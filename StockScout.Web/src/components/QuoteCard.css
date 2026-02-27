@@ -1,0 +1,16 @@
+.quoteCard {
+  max-width: 420px;
+}
+
+.quotePrice {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.quoteChangePositive {
+  color: #107c10;
+}
+
+.quoteChangeNegative {
+  color: #d13438;
+}

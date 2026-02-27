@@ -1,0 +1,23 @@
+.signedInContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 400px;
+  padding: 1.5rem;
+}
+
+.authFormTitle {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.authFormError {
+  color: #d13438;
+  font-size: 0.85rem;
+}
