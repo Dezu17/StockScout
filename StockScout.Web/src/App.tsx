@@ -14,6 +14,7 @@ import {
 } from '@fluentui/react-components';
 import { AuthenticationPage } from './pages/AuthenticationPage';
 import { QuoteCard } from './components/QuoteCard';
+import { Chatbot } from './components/ChatBot';
 import { useAuth } from './AuthenticationContext';
 import type { QuoteDto } from './types';
 
@@ -112,6 +113,7 @@ export const App: React.FC = () => {
           }
         />
       </Routes>
+      <Chatbot />
     </Router>
   );
 };
