@@ -1,11 +1,9 @@
 # StockScout
 
-A minimal full-stack starter for a stock dashboard using:
+A full-stack project for a stock dashboard using:
 
 - **Backend**: .NET 8 minimal API (C#) hitting Alpha Vantage
 - **Frontend**: React + TypeScript + Vite + Fluent UI v9
-
-> Goal: keep it intentionally simple so you can iterate quickly.
 
 ## Quick Start
 
@@ -45,26 +43,38 @@ VITE_API_BASE=http://localhost:5005/api
 ```
 Adjust if you change backend port.
 
+The app also uses Firebase Authentication. Set up a Firebase project and add the following environment variables to `StockScout.Web/.env` (also see `StockScout.Web/.env.example` for example):
+
+```
+VITE_FIREBASE_API_KEY=your_firebase_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+To get these values:
+1. Go to https://console.firebase.google.com/
+2. Create a new project (or use existing)
+3. Add a Web app to your project
+4. Copy the config values from the Firebase SDK snippet
+
+Additionaly, the app includes an AI chatbot powered by Google Gemini. To enable it:
+
+1. Get a Gemini API key from https://makersuite.google.com/app/apikey
+2. Add to `StockScout.Web/.env`:
+   ```
+   VITE_GEMINI_API_KEY=your_gemini_api_key
+   ```
+
+The chatbot icon appears in the bottom-right corner of the app.
+
 ### 4. Try It
+On the authentication page, create a new account or log in using an existing account.
 In the UI enter a symbol (e.g. MSFT, AAPL) and click "Get Quote".
+You can also use the AI chatbot. To open this, click the speech bubble icon (bottom-right corner of page).
 
-## Project Structure
-```
-StockScout.Api/            # C# minimal API
-	Program.cs              # All in one for now (endpoint + service)
-	appsettings.json        # Config (don't ship real keys)
-stockscout-web/           # React + Vite client
-	src/                    # Components & types
-```
-
-## How It Works
-Backend calls Alpha Vantage `GLOBAL_QUOTE` endpoint and normalizes the response to a compact `QuoteDto`. Frontend fetches `/api/quote/{symbol}` and displays a `QuoteCard` using Fluent UI.
-
-## Environment Variables Mapping
-`AlphaVantage:ApiKey` can be supplied via an environment variable named:
-```
-ALPHAVANTAGE__APIKEY
-```
 
 ## Continuous Integration (CI)
 GitHub Actions workflow: `.github/workflows/ci.yml`
