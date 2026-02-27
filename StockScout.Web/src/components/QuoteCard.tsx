@@ -1,38 +1,24 @@
-import {
-  Card,
-  CardHeader,
-  Body1,
-  Caption1,
-  Divider,
-  makeStyles,
-  tokens,
-} from '@fluentui/react-components';
+import { Card, CardHeader, Body1, Caption1, Divider } from '@fluentui/react-components';
 import type { QuoteDto } from '../types';
-
-const useStyles = makeStyles({
-  price: { fontSize: '2rem', fontWeight: 600 },
-  changePos: { color: tokens.colorStatusSuccessForeground1 },
-  changeNeg: { color: tokens.colorStatusDangerForeground1 },
-});
+import './QuoteCard.css';
 
 interface Props {
   quote: QuoteDto;
 }
 
 export const QuoteCard: React.FC<Props> = ({ quote }) => {
-  const styles = useStyles();
   const change = quote.change ?? 0;
   const isUp = change >= 0;
-  const changeClass = isUp ? styles.changePos : styles.changeNeg;
+  const changeClass = isUp ? 'quoteChangePositive' : 'quoteChangeNegative';
   return (
-    <Card style={{ maxWidth: 420 }}>
+    <Card className="quoteCard">
       <CardHeader
         header={<strong>{quote.symbol}</strong>}
         description={
           quote.latestTradingDay && `As of ${new Date(quote.latestTradingDay).toLocaleDateString()}`
         }
       />
-      <div className={styles.price}>{quote.price.toFixed(2)}</div>
+      <div className="quotePrice">{quote.price.toFixed(2)}</div>
       <Body1>
         Open {quote.open?.toFixed(2) ?? '-'} · High {quote.high?.toFixed(2) ?? '-'} · Low{' '}
         {quote.low?.toFixed(2) ?? '-'}

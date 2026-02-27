@@ -3,6 +3,7 @@ import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { useAuth } from '../AuthenticationContext';
 import { Button, Input, Spinner } from '@fluentui/react-components';
+import './AuthenticationForm.css';
 
 export const AuthenticationForm: React.FC = () => {
   const { user, logout } = useAuth();
@@ -32,7 +33,7 @@ export const AuthenticationForm: React.FC = () => {
 
   if (user) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <div className="signedInContainer">
         <div>
           Signed in as <strong>{user.email}</strong>
         </div>
@@ -44,17 +45,15 @@ export const AuthenticationForm: React.FC = () => {
   }
 
   return (
-    <form
-      onSubmit={submit}
-      style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxWidth: 340 }}
-    >
-      <h3 style={{ margin: 0 }}>{mode === 'login' ? 'Login' : 'Sign Up'}</h3>
+    <form onSubmit={submit} className="authForm">
+      <h3 className="authFormTitle">{mode === 'login' ? 'Login' : 'Sign Up'}</h3>
       <Input
         type="email"
         required
         placeholder="Email"
         value={email}
         onChange={(_, v) => setEmail(v.value)}
+        size="large"
       />
       <Input
         type="password"
@@ -63,9 +62,10 @@ export const AuthenticationForm: React.FC = () => {
         placeholder="Password"
         value={password}
         onChange={(_, v) => setPassword(v.value)}
+        size="large"
       />
-      {error && <div style={{ color: '#d13438', fontSize: '0.85rem' }}>{error}</div>}
-      <Button appearance="primary" type="submit" disabled={loading}>
+      {error && <div className="authFormError">{error}</div>}
+      <Button appearance="primary" type="submit" disabled={loading} size="large">
         {loading ? <Spinner size="tiny" /> : mode === 'login' ? 'Login' : 'Create Account'}
       </Button>
       <Button

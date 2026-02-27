@@ -4,7 +4,6 @@ import {
   Input,
   Button,
   Spinner,
-  makeStyles,
   Title1,
   Toaster,
   useToastController,
@@ -17,18 +16,7 @@ import { QuoteCard } from './components/QuoteCard';
 import { Chatbot } from './components/ChatBot';
 import { useAuth } from './AuthenticationContext';
 import type { QuoteDto } from './types';
-
-const useStyles = makeStyles({
-  layout: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-    padding: '1.5rem',
-    maxWidth: '900px',
-    margin: '0 auto',
-  },
-  formRow: { display: 'flex', gap: '0.5rem', alignItems: 'center' },
-});
+import './App.css';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading } = useAuth();
@@ -41,7 +29,6 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 };
 
 const Dashboard: React.FC = () => {
-  const styles = useStyles();
   const [symbol, setSymbol] = useState('MSFT');
   const [loading, setLoading] = useState(false);
   const [quote, setQuote] = useState<QuoteDto | null>(null);
@@ -71,21 +58,29 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className={styles.layout}>
-      <Toaster toasterId={toasterId} />
-      <Title1>StockScout</Title1>
-      <div className={styles.formRow}>
-        <Input
-          value={symbol}
-          onChange={(_, v) => setSymbol(v.value.toUpperCase())}
-          placeholder="Ticker symbol"
-        />
-        <Button appearance="primary" onClick={fetchQuote} disabled={!symbol || loading}>
-          Get Quote
-        </Button>
+    <div className="dashboardContainer">
+      <div className="dashboardLayout">
+        <Toaster toasterId={toasterId} />
+        <Title1>StockScout</Title1>
+        <div className="dashboardFormRow">
+          <Input
+            value={symbol}
+            onChange={(_, v) => setSymbol(v.value.toUpperCase())}
+            placeholder="Ticker symbol"
+            size="large"
+          />
+          <Button
+            appearance="primary"
+            onClick={fetchQuote}
+            disabled={!symbol || loading}
+            size="large"
+          >
+            Get Quote
+          </Button>
+        </div>
+        {loading && <Spinner label="Loading quote" />}
+        {quote && <QuoteCard quote={quote} />}
       </div>
-      {loading && <Spinner label="Loading quote" />}
-      {quote && <QuoteCard quote={quote} />}
     </div>
   );
 };

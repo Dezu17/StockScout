@@ -1,0 +1,21 @@
+.dashboardContainer {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dashboardLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.dashboardFormRow {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
