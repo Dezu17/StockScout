@@ -1,6 +1,6 @@
 import { Card, CardHeader, Body1, Caption1, Divider, Button } from '@fluentui/react-components';
 import type { QuoteDto } from '../types';
-import './QuoteCard.css';
+import '../styles/QuoteCard.css';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../AuthenticationContext';
 import { addToUserWatchlist, getUserWatchlist, removeFromUserWatchlist } from '../watchlist';
