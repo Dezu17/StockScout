@@ -29,7 +29,7 @@ const Dashboard: React.FC = () => {
           <MarketNews />
         </div>
         <div className="rightPanel">
-          <WatchlistPanel/>
+          <WatchlistPanel />
         </div>
       </div>
     </div>
