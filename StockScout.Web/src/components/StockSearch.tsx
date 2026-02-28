@@ -13,7 +13,7 @@ import {
 } from '@fluentui/react-components';
 import { QuoteCard } from './QuoteCard';
 import type { QuoteDto } from '../types';
-import './StockSearch.css';
+import '../styles/StockSearch.css';
 
 declare const __API_BASE__: string;
 
