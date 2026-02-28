@@ -7,6 +7,7 @@ import { Chatbot } from './components/ChatBot';
 import { useAuth } from './AuthenticationContext';
 import './App.css';
 import { MarketNews } from './components/MarketNews';
+import { WatchlistPanel } from './components/WatchlistPanel';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading } = useAuth();
@@ -21,10 +22,15 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const Dashboard: React.FC = () => {
   return (
     <div className="dashboardContainer">
+      <Title1>StockScout</Title1>
       <div className="dashboardLayout">
-        <Title1>StockScout</Title1>
-        <StockSearch />
-        <MarketNews />
+        <div className="leftPanel">
+          <StockSearch />
+          <MarketNews />
+        </div>
+        <div className="rightPanel">
+          <WatchlistPanel/>
+        </div>
       </div>
     </div>
   );
