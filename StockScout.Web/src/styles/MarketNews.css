@@ -1,0 +1,14 @@
+.marketNewsCard {
+  width: 500px;
+  min-height: 200px;
+  padding: 1rem;
+}
+
+.marketNewsPlaceholder {
+  padding: 2rem;
+  text-align: center;
+  color: #666;
+  border: 1px dashed #ccc;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
