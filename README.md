@@ -110,9 +110,14 @@ Additionaly, the app includes an AI chatbot powered by Google Gemini. To enable 
 The chatbot icon appears in the bottom-right corner of the app.
 
 ### 5. Try It
-On the authentication page, create a new account or log in using an existing account.
-In the UI enter a symbol (e.g. MSFT, AAPL) and click "Get Quote".
-You can also use the AI chatbot. To open this, click the speech bubble icon (bottom-right corner of page).
+1. On the authentication page, create a new account or log in with an existing account.
+2. You'll see the **Dashboard** with two panels:
+   - **Left Panel**: 
+     - **Quote Lookup**: Enter a stock symbol (e.g. MSFT, AAPL) and click "Get Quote" to view stock data. Use the "Add to My Watchlist" button to save stocks.
+     - **Market News**: Displays latest market news (planned for future).
+   - **Right Panel**: 
+     - **My Watchlist**: Shows your saved stocks as QuoteCards. Click "Remove from My Watchlist" to remove items.
+3. **AI Chatbot**: Click the speech bubble icon (bottom-right corner) to open the Gemini-powered chatbot for stock insights.
 
 
 ## Continuous Integration (CI)
