@@ -21,7 +21,7 @@ builder.Services.AddSingleton<AlphaVantageClient>();
 
 builder.Services.AddDbContext<StockScoutDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-    builder.Services.AddControllers();
+builder.Services.AddControllers();
 
 
 // Firebase JWT authentication setup (only if ProjectId configured)

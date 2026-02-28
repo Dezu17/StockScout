@@ -39,7 +39,7 @@ public class WatchlistController : ControllerBase
         var symbol = request.Symbol.Trim().ToUpperInvariant();
 
         if (await database.Watchlists.AnyAsync(element => element.UserID == userID && element.StockSymbol == symbol))
-            return Conflict(new {message = "This symbol has already been added to the user's watchlist."});
+            return Conflict(new { message = "This symbol has already been added to the user's watchlist." });
 
         var newWatchlistItem = new Watchlist { UserID = userID, StockSymbol = symbol };
         database.Watchlists.Add(newWatchlistItem);
