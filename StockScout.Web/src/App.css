@@ -1,14 +1,25 @@
 .dashboardContainer {
   min-height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  padding: 2rem;
+  gap: 1.5rem;
 }
 
 .dashboardLayout {
   display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.leftPanel {
+  display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 2rem;
-  align-items: center;
+}
+
+.rightPanel {
+  display: flex;
+  flex-direction: column;
 }
