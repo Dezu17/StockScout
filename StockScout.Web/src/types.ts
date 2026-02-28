@@ -10,3 +10,7 @@ export interface QuoteDto {
   volume?: number;
   latestTradingDay?: string;
 }
+
+export interface WatchlistItemDto {
+  symbol: string;
+}
