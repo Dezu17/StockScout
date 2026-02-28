@@ -18,7 +18,46 @@ Edit the generated `.env` file (do not commit it):
 	```
 Leave `appsettings.json` key blank. Environment variables override appsettings automatically.
 
-### 2. Backend
+### 2. Database Setup (PostgreSQL with Docker)
+
+The app uses PostgreSQL for storing user watchlists. Docker is required.
+
+#### Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
+
+#### Start the Database
+From the repo root:
+```powershell
+docker-compose up -d
+```
+
+This starts a PostgreSQL container with:
+- **Host**: localhost
+- **Port**: 5432
+- **Database**: stockscout
+- **Username**: stockscout
+- **Password**: StockScout-Admin17
+
+#### Apply Database Migrations
+```powershell
+cd StockScout.Api
+dotnet ef database update
+```
+
+> **Note**: If you don't have the EF tools installed, run:
+> ```powershell
+> dotnet tool install --global dotnet-ef
+> ```
+
+#### Useful Docker Commands
+```powershell
+docker-compose up -d      # Start container
+docker-compose down       # Stop container
+docker-compose down -v    # Stop and remove data volume
+docker ps                 # Check running containers
+```
+
+### 3. Backend
 From the repo root:
 ```powershell
 cd StockScout.Api
@@ -28,7 +67,7 @@ Default URL: http://localhost:5005
 Swagger UI: http://localhost:5005/swagger
 Health check: http://localhost:5005/api/health
 
-### 3. Frontend
+### 4. Frontend
 In a new terminal:
 ```powershell
 cd stockscout-web
@@ -70,7 +109,7 @@ Additionaly, the app includes an AI chatbot powered by Google Gemini. To enable 
 
 The chatbot icon appears in the bottom-right corner of the app.
 
-### 4. Try It
+### 5. Try It
 On the authentication page, create a new account or log in using an existing account.
 In the UI enter a symbol (e.g. MSFT, AAPL) and click "Get Quote".
 You can also use the AI chatbot. To open this, click the speech bubble icon (bottom-right corner of page).

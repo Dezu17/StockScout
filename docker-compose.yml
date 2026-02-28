@@ -1,0 +1,15 @@
+services:
+  stockscout-db:
+    image: postgres:16
+    container_name: stockscout-database
+    environment:
+      POSTGRES_USER: stockscout
+      POSTGRES_PASSWORD: StockScout-Admin17
+      POSTGRES_DB: stockscout
+    ports:
+      - "5432:5432"
+    volumes:
+      - stockscout-data:/var/lib/postgresql/data
+
+volumes:
+  stockscout-data:
