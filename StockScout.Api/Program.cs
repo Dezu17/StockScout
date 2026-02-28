@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using StockScout.Api;
+using Microsoft.EntityFrameworkCore;
+using StockScout.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
 builder.Services.Configure<AlphaVantageOptions>(builder.Configuration.GetSection("AlphaVantage"));
 builder.Services.AddSingleton<AlphaVantageClient>();
+
+builder.Services.AddDbContext<StockScoutDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    builder.Services.AddControllers();
+
 
 // Firebase JWT authentication setup (only if ProjectId configured)
 var firebaseProjectId = builder.Configuration["Firebase:ProjectId"];
@@ -55,6 +62,8 @@ app.UseSwaggerUI();
 // Auth middleware (will noop if not configured above)
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.MapGet("/api/health", () => new { status = "ok", timeUtc = DateTime.UtcNow })
     .WithName("Health");
