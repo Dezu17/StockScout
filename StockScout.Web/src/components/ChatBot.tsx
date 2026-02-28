@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, Input, Spinner } from '@fluentui/react-components';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import './ChatBot.css';
+import '../styles/ChatBot.css';
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 

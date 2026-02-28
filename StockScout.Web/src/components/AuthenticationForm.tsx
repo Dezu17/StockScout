@@ -3,7 +3,7 @@ import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { useAuth } from '../AuthenticationContext';
 import { Button, Input, Spinner } from '@fluentui/react-components';
-import './AuthenticationForm.css';
+import '../styles/AuthenticationForm.css';
 
 export const AuthenticationForm: React.FC = () => {
   const { user, logout } = useAuth();
