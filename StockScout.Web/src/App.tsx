@@ -1,13 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Spinner, Title1 } from '@fluentui/react-components';
+import { Spinner } from '@fluentui/react-components';
 import { AuthenticationPage } from './pages/AuthenticationPage';
-import { StockSearch } from './components/StockSearch';
+import { Dashboard } from './components/Dashboard';
 import { Chatbot } from './components/ChatBot';
 import { useAuth } from './AuthenticationContext';
-import './App.css';
-import { MarketNews } from './components/MarketNews';
-import { WatchlistPanel } from './components/WatchlistPanel';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading } = useAuth();
@@ -17,23 +14,6 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   }
 
   return user ? <>{children}</> : <Navigate to="/login" replace />;
-};
-
-const Dashboard: React.FC = () => {
-  return (
-    <div className="dashboardContainer">
-      <Title1>StockScout</Title1>
-      <div className="dashboardLayout">
-        <div className="leftPanel">
-          <StockSearch />
-          <MarketNews />
-        </div>
-        <div className="rightPanel">
-          <WatchlistPanel />
-        </div>
-      </div>
-    </div>
-  );
 };
 
 export const App: React.FC = () => {
