@@ -14,3 +14,13 @@ export interface QuoteDto {
 export interface WatchlistItemDto {
   symbol: string;
 }
+
+export interface NewsArticleDto {
+  uuid: string;
+  title: string;
+  description?: string;
+  url: string;
+  imageUrl?: string;
+  publishedAt: string;
+  source: string;
+}

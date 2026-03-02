@@ -1,4 +1,5 @@
 using System.Text.Json;
+using StockScout.Api.DTOs;
 
 namespace StockScout.Api;
 
