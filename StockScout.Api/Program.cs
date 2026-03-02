@@ -1,14 +1,23 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using StockScout.Api;
 using Microsoft.EntityFrameworkCore;
+using StockScout.Api.Configuration;
 using StockScout.Api.Data;
+using StockScout.Api.DTOs;
+using StockScout.Api.Services;
+using DotNetEnv;
+
+var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", ".env");
+if (File.Exists(envPath))
+{
+    Env.Load(envPath);
+}
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddEnvironmentVariables();
 
 // Add services
 builder.Services.AddHttpClient();
@@ -18,6 +27,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
 builder.Services.Configure<AlphaVantageOptions>(builder.Configuration.GetSection("AlphaVantage"));
 builder.Services.AddSingleton<AlphaVantageClient>();
+builder.Services.Configure<MarketAuxOptions>(builder.Configuration.GetSection("MarketAux"));
+builder.Services.AddSingleton<MarketAuxClient>();
 
 builder.Services.AddDbContext<StockScoutDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -86,57 +97,11 @@ app.MapGet("/api/quote/{symbol}", async (string symbol, AlphaVantageClient clien
 })
 .WithName("GetQuote");
 
+app.MapGet("/api/news", async (MarketAuxClient client, string? symbols, int? limit) =>
+{
+    var articles = await client.GetNewsAsync(symbols, limit ?? 3);
+    return Results.Ok(articles);
+})
+.WithName("GetNews");
+
 app.Run();
-
-// DTOs & service classes
-public record QuoteDto(string Symbol, decimal Price, decimal? Open, decimal? High, decimal? Low, decimal? PreviousClose, decimal? Change, string? ChangePercent, long? Volume, DateTime? LatestTradingDay);
-
-public class AlphaVantageOptions
-{
-    public string? ApiKey { get; set; }
-    public string BaseUrl { get; set; } = "https://www.alphavantage.co";
-    public int CacheTtlSeconds { get; set; }
-}
-
-public class AlphaVantageClient
-{
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly AlphaVantageOptions _options;
-    private IMemoryCache _cache;
-
-    public AlphaVantageClient(IHttpClientFactory httpClientFactory, Microsoft.Extensions.Options.IOptions<AlphaVantageOptions> options, IMemoryCache cache)
-    {
-        _httpClientFactory = httpClientFactory;
-        _options = options.Value;
-        _cache = cache;
-    }
-
-    public async Task<QuoteDto?> GetQuoteAsync(string symbol, CancellationToken ct = default)
-    {
-        if (string.IsNullOrEmpty(_options.ApiKey))
-            throw new InvalidOperationException("AlphaVantage ApiKey not configured. Set AlphaVantage:ApiKey in appsettings or environment (ALPHAVANTAGE__APIKEY).");
-
-        var cacheKey = $"quote:{symbol}";
-        if (_cache.TryGetValue(cacheKey, out QuoteDto? cachedData) && cachedData is not null)
-            return cachedData;
-
-        var url = $"{_options.BaseUrl}/query?function=GLOBAL_QUOTE&symbol={Uri.EscapeDataString(symbol)}&apikey={_options.ApiKey}";
-        var client = _httpClientFactory.CreateClient();
-        using var resp = await client.GetAsync(url, ct);
-        if (!resp.IsSuccessStatusCode) return null;
-        await using var s = await resp.Content.ReadAsStreamAsync(ct);
-        using var doc = await JsonDocument.ParseAsync(s, cancellationToken: ct);
-        var dto = QuoteMapper.MapFromGlobalQuote(doc);
-        if (dto is not null)
-        {
-            _cache.Set(
-                cacheKey,
-                dto,
-                new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(Math.Max(1, _options.CacheTtlSeconds))
-                });
-        }
-        return dto;
-    }
-}

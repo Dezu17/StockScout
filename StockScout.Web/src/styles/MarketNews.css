@@ -4,6 +4,7 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 
 .marketNewsPlaceholder {
@@ -13,4 +14,16 @@
   border: 1px dashed #ccc;
   border-radius: 4px;
   margin-top: 1rem;
+}
+
+.marketNewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.marketNewsError {
+  color: #d32f2f;
+  text-align: center;
+  padding: 1rem;
 }
