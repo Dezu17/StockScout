@@ -6,9 +6,24 @@ import { QuoteCard } from './QuoteCard';
 import type { QuoteDto } from '../types';
 import '../styles/WatchlistPanel.css';
 
-declare const __API_BASE__: string;
+// Uncomment to use real API (requires API key with sufficient quota)
+// declare const __API_BASE__: string;
 
 const MAX_VISIBLE_ITEMS = 3;
+
+// Mock quote generator to avoid API rate limits (25/day on free tier)
+const createMockQuote = (symbol: string): QuoteDto => ({
+  symbol,
+  price: Math.round((100 + Math.random() * 400) * 100) / 100,
+  open: Math.round((100 + Math.random() * 400) * 100) / 100,
+  high: Math.round((100 + Math.random() * 400) * 100) / 100,
+  low: Math.round((100 + Math.random() * 400) * 100) / 100,
+  previousClose: Math.round((100 + Math.random() * 400) * 100) / 100,
+  change: Math.round((Math.random() * 10 - 5) * 100) / 100,
+  changePercent: `${(Math.random() * 5 - 2.5).toFixed(2)}%`,
+  volume: Math.floor(Math.random() * 50000000),
+  latestTradingDay: new Date().toISOString().split('T')[0],
+});
 
 export const WatchlistPanel: React.FC = () => {
   const { token } = useAuth();
@@ -21,16 +36,23 @@ export const WatchlistPanel: React.FC = () => {
       if (!token) return;
       try {
         const symbols = await getUserWatchlist(token);
-        // Fetch quote data for each symbol
-        const quotePromises = symbols.map(async (symbol) => {
-          const res = await fetch(`${__API_BASE__}/quote/${encodeURIComponent(symbol)}`);
-          if (!res.ok) return null;
-          return res.json() as Promise<QuoteDto>;
-        });
-        const results = await Promise.all(quotePromises);
-        setQuotes(results.filter((q): q is QuoteDto => q !== null));
+        
+        // ===== MOCK DATA (comment out to use real API) =====
+        const mockQuotes = symbols.map(createMockQuote);
+        setQuotes(mockQuotes);
+        // ===== END MOCK DATA =====
+
+        // ===== REAL API (uncomment to use real quotes) =====
+        // const quotePromises = symbols.map(async (symbol) => {
+        //   const res = await fetch(`${__API_BASE__}/quote/${encodeURIComponent(symbol)}`);
+        //   if (!res.ok) return null;
+        //   return res.json() as Promise<QuoteDto>;
+        // });
+        // const results = await Promise.all(quotePromises);
+        // setQuotes(results.filter((q): q is QuoteDto => q !== null));
+        // ===== END REAL API =====
       } catch (error) {
-        console.error('Error fetching watchlist quotes:', error);
+        console.error('Error fetching watchlist:', error);
       } finally {
         setLoading(false);
       }
