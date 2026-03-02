@@ -60,8 +60,10 @@ export const WatchlistPanel: React.FC = () => {
     fetchWatchlistQuotes();
   }, [token]);
 
-  const displayedItems = showAll ? quotes : quotes.slice(0, MAX_VISIBLE_ITEMS);
-  const hasMore = quotes.length > MAX_VISIBLE_ITEMS;
+  // Sort quotes by price (highest to lowest)
+  const sortedQuotes = [...quotes].sort((a, b) => b.price - a.price);
+  const displayedItems = showAll ? sortedQuotes : sortedQuotes.slice(0, MAX_VISIBLE_ITEMS);
+  const hasMore = sortedQuotes.length > MAX_VISIBLE_ITEMS;
 
   return (
     <Card className="watchlistPanel">
