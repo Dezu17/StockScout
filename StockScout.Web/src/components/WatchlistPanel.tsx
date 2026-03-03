@@ -27,9 +27,10 @@ interface Props {
   symbols: string[];
   loading: boolean;
   setLoading: (loading: boolean) => void;
+  onWatchlistChange?: () => void;
 }
 
-export const WatchlistPanel: React.FC<Props> = ({ symbols, loading, setLoading }) => {
+export const WatchlistPanel: React.FC<Props> = ({ symbols, loading, setLoading, onWatchlistChange }) => {
   const [quotes, setQuotes] = useState<QuoteDto[]>([]);
   const [showAll, setShowAll] = useState(false);
 
@@ -80,7 +81,7 @@ export const WatchlistPanel: React.FC<Props> = ({ symbols, loading, setLoading }
         <>
           <div className="watchlistItems">
             {displayedItems.map((quote) => (
-              <QuoteCard key={quote.symbol} quote={quote} />
+              <QuoteCard key={quote.symbol} quote={quote} onWatchlistChange={onWatchlistChange} />
             ))}
           </div>
           {hasMore && !showAll && (
