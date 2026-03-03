@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Card, Title2, Body1, Button, Spinner } from '@fluentui/react-components';
-import { useAuth } from '../AuthenticationContext';
-import { getUserWatchlist } from '../watchlist';
 import { QuoteCard } from './QuoteCard';
 import type { QuoteDto } from '../types';
 import '../styles/WatchlistPanel.css';
@@ -25,17 +23,24 @@ const createMockQuote = (symbol: string): QuoteDto => ({
   latestTradingDay: new Date().toISOString().split('T')[0],
 });
 
-export const WatchlistPanel: React.FC = () => {
-  const { token } = useAuth();
+interface Props {
+  symbols: string[];
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+}
+
+export const WatchlistPanel: React.FC<Props> = ({ symbols, loading, setLoading }) => {
   const [quotes, setQuotes] = useState<QuoteDto[]>([]);
-  const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const fetchWatchlistQuotes = async () => {
-      if (!token) return;
+      if (symbols.length === 0) {
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
       try {
-        const symbols = await getUserWatchlist(token);
         
         // ===== MOCK DATA (comment out to use real API) =====
         const mockQuotes = symbols.map(createMockQuote);
@@ -58,7 +63,7 @@ export const WatchlistPanel: React.FC = () => {
       }
     };
     fetchWatchlistQuotes();
-  }, [token]);
+  }, [symbols, setLoading]);
 
   // Sort quotes by price (highest to lowest)
   const sortedQuotes = [...quotes].sort((a, b) => b.price - a.price);

@@ -19,21 +19,19 @@ public class MarketAuxClient
         _cache = cache;
     }
 
-    private const string DefaultSymbols = "TSLA,AMZN,MSFT,AAPL,GOOGL";
-
     public async Task<List<NewsArticleDto>> GetNewsAsync(string? symbols = null, int limit = 3, CancellationToken ct = default)
     {
+        if (string.IsNullOrWhiteSpace(symbols))
+            return new List<NewsArticleDto>();
+
         if (string.IsNullOrEmpty(_options.ApiKey))
             throw new InvalidOperationException("MarketAux ApiKey not configured. Set MarketAux:ApiKey in appsettings or environment (MARKETAUX__APIKEY).");
 
-        // Use default symbols if none provided
-        var effectiveSymbols = string.IsNullOrWhiteSpace(symbols) ? DefaultSymbols : symbols;
-
-        var cacheKey = $"news:{effectiveSymbols}:{limit}";
+        var cacheKey = $"news:{symbols}:{limit}";
         if (_cache.TryGetValue(cacheKey, out List<NewsArticleDto>? cachedData) && cachedData is not null)
             return cachedData;
 
-        var url = $"{_options.BaseUrl}/news/all?api_token={_options.ApiKey}&language=en&limit={limit}&symbols={Uri.EscapeDataString(effectiveSymbols)}";
+        var url = $"{_options.BaseUrl}/news/all?api_token={_options.ApiKey}&language=en&limit={limit}&symbols={Uri.EscapeDataString(symbols)}";
 
         var client = _httpClientFactory.CreateClient();
         using var resp = await client.GetAsync(url, ct);
