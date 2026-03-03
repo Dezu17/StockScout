@@ -17,7 +17,11 @@ import '../styles/StockSearch.css';
 
 declare const __API_BASE__: string;
 
-export const StockSearch: React.FC = () => {
+interface Props {
+  onWatchlistChange?: () => void;
+}
+
+export const StockSearch: React.FC<Props> = ({ onWatchlistChange }) => {
   const [symbol, setSymbol] = useState('MSFT');
   const [loading, setLoading] = useState(false);
   const [quote, setQuote] = useState<QuoteDto | null>(null);
@@ -67,7 +71,7 @@ export const StockSearch: React.FC = () => {
           </Button>
         </div>
         {loading && <Spinner label="Loading quote" />}
-        {quote && <QuoteCard quote={quote} />}
+        {quote && <QuoteCard quote={quote} onWatchlistChange={onWatchlistChange} />}
       </Card>
     </>
   );

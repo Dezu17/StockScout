@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Title1 } from '@fluentui/react-components';
 import { StockSearch } from './StockSearch';
 import { MarketNews } from './MarketNews';
@@ -14,18 +14,22 @@ export const Dashboard: React.FC = () => {
   const [newsLoading, setNewsLoading] = useState(true);
   const [watchlistLoading, setWatchlistLoading] = useState(true);
 
-  useEffect(() => {
+  const refreshWatchlist = useCallback(() => {
     if (token) {
       getUserWatchlist(token).then(setSymbols);
     }
   }, [token]);
+
+  useEffect(() => {
+    refreshWatchlist();
+  }, [refreshWatchlist]);
 
   return (
     <div className="dashboardContainer">
       <Title1>StockScout</Title1>
       <div className="dashboardLayout">
         <div className="leftPanel">
-          <StockSearch />
+          <StockSearch onWatchlistChange={refreshWatchlist} />
           <MarketNews symbols={symbols} loading={newsLoading} setLoading={setNewsLoading} />
         </div>
         <div className="rightPanel">
@@ -33,6 +37,7 @@ export const Dashboard: React.FC = () => {
             symbols={symbols}
             loading={watchlistLoading}
             setLoading={setWatchlistLoading}
+            onWatchlistChange={refreshWatchlist}
           />
         </div>
       </div>
