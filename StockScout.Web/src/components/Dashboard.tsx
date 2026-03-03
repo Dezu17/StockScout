@@ -34,7 +34,7 @@ export const Dashboard: React.FC = () => {
 
   const handleSymbolAdded = useCallback((symbol: string) => {
     // Update symbols after WatchlistPanel has added the quote locally
-    setSymbols(prev => prev.includes(symbol) ? prev : [...prev, symbol]);
+    setSymbols((prev) => (prev.includes(symbol) ? prev : [...prev, symbol]));
   }, []);
 
   const clearPendingQuote = useCallback(() => {
@@ -42,7 +42,7 @@ export const Dashboard: React.FC = () => {
   }, []);
 
   const handleSymbolRemoved = useCallback((symbol: string) => {
-    setSymbols(prev => prev.filter(s => s !== symbol));
+    setSymbols((prev) => prev.filter((s) => s !== symbol));
   }, []);
 
   return (

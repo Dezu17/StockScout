@@ -33,14 +33,14 @@ interface Props {
   onSymbolAdded?: (symbol: string) => void;
 }
 
-export const WatchlistPanel: React.FC<Props> = ({ 
-  symbols, 
-  loading, 
-  setLoading, 
+export const WatchlistPanel: React.FC<Props> = ({
+  symbols,
+  loading,
+  setLoading,
   pendingQuote,
   onPendingQuoteConsumed,
   onSymbolRemoved,
-  onSymbolAdded
+  onSymbolAdded,
 }) => {
   const [quotes, setQuotes] = useState<QuoteDto[]>([]);
   const [showAll, setShowAll] = useState(false);
@@ -48,8 +48,8 @@ export const WatchlistPanel: React.FC<Props> = ({
 
   // Fetch quotes only for symbols we haven't fetched yet
   useEffect(() => {
-    const newSymbols = symbols.filter(s => !fetchedSymbols.has(s));
-    
+    const newSymbols = symbols.filter((s) => !fetchedSymbols.has(s));
+
     if (newSymbols.length === 0) {
       if (symbols.length === 0) {
         setQuotes([]);
@@ -57,13 +57,13 @@ export const WatchlistPanel: React.FC<Props> = ({
       setLoading(false);
       return;
     }
-    
+
     const fetchNewQuotes = async () => {
       setLoading(true);
       try {
         // ===== MOCK DATA (comment out to use real API) =====
         const newQuotes = newSymbols.map(createMockQuote);
-        setQuotes(prev => [...prev, ...newQuotes]);
+        setQuotes((prev) => [...prev, ...newQuotes]);
         // ===== END MOCK DATA =====
 
         // ===== REAL API (uncomment to use real quotes) =====
@@ -75,32 +75,32 @@ export const WatchlistPanel: React.FC<Props> = ({
         // const results = await Promise.all(quotePromises);
         // setQuotes(prev => [...prev, ...results.filter((q): q is QuoteDto => q !== null)]);
         // ===== END REAL API =====
-        
-        setFetchedSymbols(prev => new Set([...prev, ...newSymbols]));
+
+        setFetchedSymbols((prev) => new Set([...prev, ...newSymbols]));
       } catch (error) {
         console.error('Error fetching watchlist:', error);
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchNewQuotes();
   }, [symbols, setLoading, fetchedSymbols]);
 
   // Reuse existing quote data from stock search component
   useEffect(() => {
-    if (pendingQuote && !quotes.some(q => q.symbol === pendingQuote.symbol)) {
-      setQuotes(prev => [...prev, pendingQuote]);
-      setFetchedSymbols(prev => new Set([...prev, pendingQuote.symbol]));
-      onSymbolAdded?.(pendingQuote.symbol);  // Update symbols in Dashboard
+    if (pendingQuote && !quotes.some((q) => q.symbol === pendingQuote.symbol)) {
+      setQuotes((prev) => [...prev, pendingQuote]);
+      setFetchedSymbols((prev) => new Set([...prev, pendingQuote.symbol]));
+      onSymbolAdded?.(pendingQuote.symbol); // Update symbols in Dashboard
       onPendingQuoteConsumed?.();
     }
   }, [pendingQuote, quotes, onPendingQuoteConsumed, onSymbolAdded]);
 
   // Handle local removal of a quote
   const handleSymbolRemoved = (symbol: string) => {
-    setQuotes(prev => prev.filter(q => q.symbol !== symbol));
-    setFetchedSymbols(prev => {
+    setQuotes((prev) => prev.filter((q) => q.symbol !== symbol));
+    setFetchedSymbols((prev) => {
       const next = new Set(prev);
       next.delete(symbol);
       return next;
