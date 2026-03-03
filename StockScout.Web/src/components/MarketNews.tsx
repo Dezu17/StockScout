@@ -8,15 +8,30 @@ declare const __API_BASE__: string;
 
 const MAX_ARTICLES = 3;
 
-export const MarketNews: React.FC = () => {
+interface Props {
+  symbols: string[];
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+}
+
+export const MarketNews: React.FC<Props> = ({ symbols, loading, setLoading }) => {
   const [articles, setArticles] = useState<NewsArticleDto[]>([]);
-  const [loading, setLoading] = useState(true);
+  //const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // If no symbols exist in the user's watchlist, don't fetch news
+    if (symbols.length === 0) {
+      setArticles([]);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
     const fetchNews = async () => {
       try {
-        const res = await fetch(`${__API_BASE__}/news?limit=${MAX_ARTICLES}`);
+        const symbolsParam = symbols.join(',');
+        const res = await fetch(`${__API_BASE__}/news?limit=${MAX_ARTICLES}&symbols=${symbolsParam}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data: NewsArticleDto[] = await res.json();
         setArticles(data);
@@ -28,7 +43,7 @@ export const MarketNews: React.FC = () => {
       }
     };
     fetchNews();
-  }, []);
+  }, [symbols, setLoading]);
 
   return (
     <Card className="marketNewsCard">
