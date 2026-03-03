@@ -31,7 +31,7 @@ jobs:
           dotnet format --verify-no-changes
 
       - name: Run unit tests
-        run: dotnet test StockScout.Api.Tests/StockScout.Api.Tests.csproj --configuration Release --no-build --verbosity minimal
+        run: dotnet test StockScout.Api.Tests/StockScout.Api.Tests.csproj --configuration Release --verbosity minimal
 
       # Frontend
       - name: Setup Node
