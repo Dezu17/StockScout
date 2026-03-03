@@ -7,10 +7,11 @@ import { addToUserWatchlist, getUserWatchlist, removeFromUserWatchlist } from '.
 
 interface Props {
   quote: QuoteDto;
-  onWatchlistChange?: () => void;
+  onQuoteAdded?: (quote: QuoteDto) => void;
+  onSymbolRemoved?: (symbol: string) => void;
 }
 
-export const QuoteCard: React.FC<Props> = ({ quote, onWatchlistChange }) => {
+export const QuoteCard: React.FC<Props> = ({ quote, onQuoteAdded, onSymbolRemoved }) => {
   const { token } = useAuth();
   const [isInUserWatchlist, setIsInUserWatchlist] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,11 +42,12 @@ export const QuoteCard: React.FC<Props> = ({ quote, onWatchlistChange }) => {
       if (isInUserWatchlist) {
         await removeFromUserWatchlist(token, quote.symbol);
         setIsInUserWatchlist(false);
+        onSymbolRemoved?.(quote.symbol);
       } else {
         await addToUserWatchlist(token, quote.symbol);
         setIsInUserWatchlist(true);
+        onQuoteAdded?.(quote);
       }
-      onWatchlistChange?.();
     } catch (error) {
       console.error("Error updating user's watchlist:", error);
     } finally {

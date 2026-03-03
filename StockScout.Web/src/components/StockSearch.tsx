@@ -18,11 +18,11 @@ import '../styles/StockSearch.css';
 declare const __API_BASE__: string;
 
 interface Props {
-  onWatchlistChange?: () => void;
+  onQuoteAdded?: (quote: QuoteDto) => void;
 }
 
-export const StockSearch: React.FC<Props> = ({ onWatchlistChange }) => {
-  const [symbol, setSymbol] = useState('MSFT');
+export const StockSearch: React.FC<Props> = ({ onQuoteAdded }) => {
+  const [symbol, setSymbol] = useState('');
   const [loading, setLoading] = useState(false);
   const [quote, setQuote] = useState<QuoteDto | null>(null);
   const toasterId = useId('stock-search-toaster');
@@ -58,7 +58,7 @@ export const StockSearch: React.FC<Props> = ({ onWatchlistChange }) => {
           <Input
             value={symbol}
             onChange={(_, v) => setSymbol(v.value.toUpperCase())}
-            placeholder="Ticker symbol"
+            placeholder="Search a stock symbol"
             size="large"
           />
           <Button
@@ -71,7 +71,7 @@ export const StockSearch: React.FC<Props> = ({ onWatchlistChange }) => {
           </Button>
         </div>
         {loading && <Spinner label="Loading quote" />}
-        {quote && <QuoteCard quote={quote} onWatchlistChange={onWatchlistChange} />}
+        {quote && <QuoteCard quote={quote} onQuoteAdded={onQuoteAdded} />}
       </Card>
     </>
   );

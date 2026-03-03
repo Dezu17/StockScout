@@ -27,43 +27,86 @@ interface Props {
   symbols: string[];
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  onWatchlistChange?: () => void;
+  pendingQuote?: QuoteDto | null;
+  onPendingQuoteConsumed?: () => void;
+  onSymbolRemoved?: (symbol: string) => void;
+  onSymbolAdded?: (symbol: string) => void;
 }
 
-export const WatchlistPanel: React.FC<Props> = ({ symbols, loading, setLoading, onWatchlistChange }) => {
+export const WatchlistPanel: React.FC<Props> = ({ 
+  symbols, 
+  loading, 
+  setLoading, 
+  pendingQuote,
+  onPendingQuoteConsumed,
+  onSymbolRemoved,
+  onSymbolAdded
+}) => {
   const [quotes, setQuotes] = useState<QuoteDto[]>([]);
   const [showAll, setShowAll] = useState(false);
+  const [fetchedSymbols, setFetchedSymbols] = useState<Set<string>>(new Set());
 
+  // Fetch quotes only for symbols we haven't fetched yet
   useEffect(() => {
-    const fetchWatchlistQuotes = async () => {
+    const newSymbols = symbols.filter(s => !fetchedSymbols.has(s));
+    
+    if (newSymbols.length === 0) {
       if (symbols.length === 0) {
-        setLoading(false);
-        return;
+        setQuotes([]);
       }
+      setLoading(false);
+      return;
+    }
+    
+    const fetchNewQuotes = async () => {
       setLoading(true);
       try {
         // ===== MOCK DATA (comment out to use real API) =====
-        const mockQuotes = symbols.map(createMockQuote);
-        setQuotes(mockQuotes);
+        const newQuotes = newSymbols.map(createMockQuote);
+        setQuotes(prev => [...prev, ...newQuotes]);
         // ===== END MOCK DATA =====
 
         // ===== REAL API (uncomment to use real quotes) =====
-        // const quotePromises = symbols.map(async (symbol) => {
+        // const quotePromises = newSymbols.map(async (symbol) => {
         //   const res = await fetch(`${__API_BASE__}/quote/${encodeURIComponent(symbol)}`);
         //   if (!res.ok) return null;
         //   return res.json() as Promise<QuoteDto>;
         // });
         // const results = await Promise.all(quotePromises);
-        // setQuotes(results.filter((q): q is QuoteDto => q !== null));
+        // setQuotes(prev => [...prev, ...results.filter((q): q is QuoteDto => q !== null)]);
         // ===== END REAL API =====
+        
+        setFetchedSymbols(prev => new Set([...prev, ...newSymbols]));
       } catch (error) {
         console.error('Error fetching watchlist:', error);
       } finally {
         setLoading(false);
       }
     };
-    fetchWatchlistQuotes();
-  }, [symbols, setLoading]);
+    
+    fetchNewQuotes();
+  }, [symbols, setLoading, fetchedSymbols]);
+
+  // Reuse existing quote data from stock search component
+  useEffect(() => {
+    if (pendingQuote && !quotes.some(q => q.symbol === pendingQuote.symbol)) {
+      setQuotes(prev => [...prev, pendingQuote]);
+      setFetchedSymbols(prev => new Set([...prev, pendingQuote.symbol]));
+      onSymbolAdded?.(pendingQuote.symbol);  // Update symbols in Dashboard
+      onPendingQuoteConsumed?.();
+    }
+  }, [pendingQuote, quotes, onPendingQuoteConsumed, onSymbolAdded]);
+
+  // Handle local removal of a quote
+  const handleSymbolRemoved = (symbol: string) => {
+    setQuotes(prev => prev.filter(q => q.symbol !== symbol));
+    setFetchedSymbols(prev => {
+      const next = new Set(prev);
+      next.delete(symbol);
+      return next;
+    });
+    onSymbolRemoved?.(symbol);
+  };
 
   // Sort quotes by price (highest to lowest)
   const sortedQuotes = [...quotes].sort((a, b) => b.price - a.price);
@@ -81,7 +124,7 @@ export const WatchlistPanel: React.FC<Props> = ({ symbols, loading, setLoading, 
         <>
           <div className="watchlistItems">
             {displayedItems.map((quote) => (
-              <QuoteCard key={quote.symbol} quote={quote} onWatchlistChange={onWatchlistChange} />
+              <QuoteCard key={quote.symbol} quote={quote} onSymbolRemoved={handleSymbolRemoved} />
             ))}
           </div>
           {hasMore && !showAll && (
