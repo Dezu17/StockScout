@@ -7,7 +7,6 @@ import '../styles/Dashboard.css';
 import { getUserWatchlist } from '../watchlist';
 import { useAuth } from '../AuthenticationContext';
 
-
 export const Dashboard: React.FC = () => {
   const { token } = useAuth();
 
@@ -16,21 +15,25 @@ export const Dashboard: React.FC = () => {
   const [watchlistLoading, setWatchlistLoading] = useState(true);
 
   useEffect(() => {
-  if (token) {
-    getUserWatchlist(token).then(setSymbols);
-  }
-}, [token]);
+    if (token) {
+      getUserWatchlist(token).then(setSymbols);
+    }
+  }, [token]);
 
   return (
     <div className="dashboardContainer">
       <Title1>StockScout</Title1>
       <div className="dashboardLayout">
         <div className="leftPanel">
-          <StockSearch/>
-          <MarketNews symbols={symbols} loading={newsLoading} setLoading={setNewsLoading}/>
+          <StockSearch />
+          <MarketNews symbols={symbols} loading={newsLoading} setLoading={setNewsLoading} />
         </div>
         <div className="rightPanel">
-          <WatchlistPanel symbols={symbols} loading={watchlistLoading} setLoading={setWatchlistLoading}/>
+          <WatchlistPanel
+            symbols={symbols}
+            loading={watchlistLoading}
+            setLoading={setWatchlistLoading}
+          />
         </div>
       </div>
     </div>

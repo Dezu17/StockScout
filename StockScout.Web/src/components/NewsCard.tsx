@@ -16,11 +16,14 @@ export const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
 
   return (
     <Card className="newsCard">
-      {article.imageUrl && (
-        <img src={article.imageUrl} alt="" className="newsCardImage" />
-      )}
+      {article.imageUrl && <img src={article.imageUrl} alt="" className="newsCardImage" />}
       <div className="newsCardContent">
-        <Link href={article.url} target="_blank" rel="noopener noreferrer" className="newsCardTitle">
+        <Link
+          href={article.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="newsCardTitle"
+        >
           {article.title}
         </Link>
         {article.description && (
