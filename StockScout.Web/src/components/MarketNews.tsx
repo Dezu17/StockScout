@@ -31,7 +31,9 @@ export const MarketNews: React.FC<Props> = ({ symbols, loading, setLoading }) =>
     const fetchNews = async () => {
       try {
         const symbolsParam = symbols.join(',');
-        const res = await fetch(`${__API_BASE__}/news?limit=${MAX_ARTICLES}&symbols=${symbolsParam}`);
+        const res = await fetch(
+          `${__API_BASE__}/news?limit=${MAX_ARTICLES}&symbols=${symbolsParam}`
+        );
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data: NewsArticleDto[] = await res.json();
         setArticles(data);

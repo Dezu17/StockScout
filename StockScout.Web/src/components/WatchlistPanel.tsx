@@ -41,7 +41,6 @@ export const WatchlistPanel: React.FC<Props> = ({ symbols, loading, setLoading }
       }
       setLoading(true);
       try {
-        
         // ===== MOCK DATA (comment out to use real API) =====
         const mockQuotes = symbols.map(createMockQuote);
         setQuotes(mockQuotes);
