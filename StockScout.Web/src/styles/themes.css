@@ -1,0 +1,102 @@
+/* Theme CSS Variables */
+:root,
+[data-theme='light'] {
+  /* Backgrounds */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #e2e8f0;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f0f4f8;
+  --bg-input: #ffffff;
+  --bg-header: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+
+  /* Text */
+  --text-primary: #1a1a1a;
+  --text-secondary: #605e5c;
+  --text-muted: #a19f9d;
+  --text-on-primary: #ffffff;
+
+  /* Borders */
+  --border-color: #e8e8e8;
+  --border-color-hover: #0078d4;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+
+  /* Accent */
+  --accent-primary: #0078d4;
+  --accent-primary-hover: #005a9e;
+  --accent-gradient: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+
+  /* Status */
+  --positive: #107c10;
+  --positive-bg: rgba(16, 124, 16, 0.1);
+  --negative: #d13438;
+  --negative-bg: rgba(209, 52, 56, 0.1);
+
+  /* Chat */
+  --chat-user-bg: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+  --chat-assistant-bg: #ffffff;
+
+  /* Misc */
+  --divider: linear-gradient(90deg, transparent, #e0e0e0, transparent);
+  --scrollbar-thumb: #d2d0ce;
+  --scrollbar-thumb-hover: #a19f9d;
+}
+
+[data-theme='dark'] {
+  /* Backgrounds */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #1e293b;
+  --bg-card-hover: #334155;
+  --bg-input: #334155;
+  --bg-header: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+
+  /* Text */
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-on-primary: #ffffff;
+
+  /* Borders */
+  --border-color: #334155;
+  --border-color-hover: #60a5fa;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+  /* Accent */
+  --accent-primary: #3b82f6;
+  --accent-primary-hover: #2563eb;
+  --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+
+  /* Status */
+  --positive: #22c55e;
+  --positive-bg: rgba(34, 197, 94, 0.15);
+  --negative: #ef4444;
+  --negative-bg: rgba(239, 68, 68, 0.15);
+
+  /* Chat */
+  --chat-user-bg: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --chat-assistant-bg: #334155;
+
+  /* Misc */
+  --divider: linear-gradient(90deg, transparent, #475569, transparent);
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748b;
+}
+
+/* Smooth transition for theme changes */
+*,
+*::before,
+*::after {
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.2s ease,
+    box-shadow 0.3s ease;
+}

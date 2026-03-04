@@ -1,15 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { DataTrending24Filled } from '@fluentui/react-icons';
+import { DataTrending24Filled, WeatherMoon24Regular, WeatherSunny24Regular } from '@fluentui/react-icons';
 import { StockSearch } from './StockSearch';
 import { MarketNews } from './MarketNews';
 import { WatchlistPanel } from './WatchlistPanel';
 import '../styles/Dashboard.css';
 import { getUserWatchlist } from '../watchlist';
 import { useAuth } from '../AuthenticationContext';
+import { useTheme } from '../ThemeContext';
 import type { QuoteDto } from '../types';
 
 export const Dashboard: React.FC = () => {
   const { token } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const [symbols, setSymbols] = useState<string[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
@@ -47,6 +49,14 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="dashboardContainer">
+      <button
+        className="themeToggle"
+        onClick={toggleTheme}
+        aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+        title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      >
+        {theme === 'dark' ? <WeatherSunny24Regular /> : <WeatherMoon24Regular />}
+      </button>
       <header className="dashboardHeader">
         <div className="dashboardLogo">
           <DataTrending24Filled />

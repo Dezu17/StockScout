@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #0078d4 0%, #005a9e 50%, #003d6a 100%);
+  background: var(--bg-header);
   position: relative;
   overflow: hidden;
 }
@@ -38,12 +38,11 @@
   gap: 1.5rem;
   align-items: center;
   text-align: center;
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--bg-card);
   backdrop-filter: blur(10px);
   border-radius: 24px;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
   position: relative;
   z-index: 1;
   max-width: 480px;
@@ -65,7 +64,7 @@
 .authPageContent h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--text-primary);
   margin: 0;
   letter-spacing: -0.5px;
 }
@@ -79,7 +78,7 @@
 
 .authPageSubtitle {
   margin: 0;
-  color: #605e5c;
+  color: var(--text-secondary);
   font-size: 1.1rem;
   line-height: 1.5;
 }

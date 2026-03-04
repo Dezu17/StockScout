@@ -6,25 +6,22 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  background: #ffffff;
+  background: var(--bg-card);
   border-radius: 16px;
-  box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
   transition:
     box-shadow 0.3s ease,
     transform 0.3s ease;
 }
 
 .searchContainer:hover {
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-lg);
 }
 
 .searchContainer h2 {
   margin: 0;
-  color: #1a1a1a;
+  color: var(--text-primary);
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -46,14 +43,16 @@
 .searchFormRow input {
   flex: 1;
   border-radius: 12px !important;
-  border: 2px solid #e5e5e5 !important;
+  border: 2px solid var(--border-color) !important;
+  background: var(--bg-input) !important;
+  color: var(--text-primary) !important;
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease !important;
 }
 
 .searchFormRow input:focus {
-  border-color: #0078d4 !important;
+  border-color: var(--accent-primary) !important;
   box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1) !important;
 }
 
