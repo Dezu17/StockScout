@@ -1,6 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Input } from '@fluentui/react-components';
-import { Send24Regular, Dismiss24Regular, Chat24Filled, Bot24Regular, Person24Regular } from '@fluentui/react-icons';
+import {
+  Send24Regular,
+  Dismiss24Regular,
+  Chat24Filled,
+  Bot24Regular,
+  Person24Regular,
+} from '@fluentui/react-icons';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import '../styles/ChatBot.css';
 
@@ -61,7 +67,11 @@ export const Chatbot: React.FC = () => {
       console.error('Error sending message:', error);
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: 'Sorry, something went wrong. Please try again.', timestamp: new Date() },
+        {
+          role: 'assistant',
+          content: 'Sorry, something went wrong. Please try again.',
+          timestamp: new Date(),
+        },
       ]);
     } finally {
       setLoading(false);
@@ -83,9 +93,7 @@ export const Chatbot: React.FC = () => {
         title={isOpen ? 'Close chat' : 'Open chat'}
         aria-label={isOpen ? 'Close chat' : 'Open chat'}
       >
-        <span className="fabIcon">
-          {isOpen ? <Dismiss24Regular /> : <Chat24Filled />}
-        </span>
+        <span className="fabIcon">{isOpen ? <Dismiss24Regular /> : <Chat24Filled />}</span>
       </button>
 
       <div className={`chatContainer ${isOpen ? 'chatOpen' : ''}`}>
@@ -99,7 +107,11 @@ export const Chatbot: React.FC = () => {
               <span className="chatHeaderSubtitle">Powered by Gemini AI</span>
             </div>
           </div>
-          <button className="chatCloseButton" onClick={() => setIsOpen(false)} aria-label="Close chat">
+          <button
+            className="chatCloseButton"
+            onClick={() => setIsOpen(false)}
+            aria-label="Close chat"
+          >
             <Dismiss24Regular />
           </button>
         </div>
@@ -112,13 +124,20 @@ export const Chatbot: React.FC = () => {
               </div>
               <h3 className="welcomeTitle">Welcome to StockScout!</h3>
               <p className="welcomeText">
-                I&apos;m your AI assistant. Ask me anything about stocks, market trends, or your portfolio.
+                I&apos;m your AI assistant. Ask me anything about stocks, market trends, or your
+                portfolio.
               </p>
               <div className="suggestedQuestions">
-                <button className="suggestionChip" onClick={() => setInput('What stocks are trending today?')}>
+                <button
+                  className="suggestionChip"
+                  onClick={() => setInput('What stocks are trending today?')}
+                >
                   Trending stocks
                 </button>
-                <button className="suggestionChip" onClick={() => setInput('How do I analyze a stock?')}>
+                <button
+                  className="suggestionChip"
+                  onClick={() => setInput('How do I analyze a stock?')}
+                >
                   How to analyze
                 </button>
                 <button className="suggestionChip" onClick={() => setInput('Explain market cap')}>
@@ -129,11 +148,18 @@ export const Chatbot: React.FC = () => {
           )}
 
           {messages.map((msg, index) => (
-            <div key={index} className={`messageWrapper ${msg.role === 'user' ? 'userWrapper' : 'assistantWrapper'}`}>
-              <div className={`messageAvatar ${msg.role === 'user' ? 'userAvatar' : 'assistantAvatar'}`}>
+            <div
+              key={index}
+              className={`messageWrapper ${msg.role === 'user' ? 'userWrapper' : 'assistantWrapper'}`}
+            >
+              <div
+                className={`messageAvatar ${msg.role === 'user' ? 'userAvatar' : 'assistantAvatar'}`}
+              >
                 {msg.role === 'user' ? <Person24Regular /> : <Bot24Regular />}
               </div>
-              <div className={`messageBubble ${msg.role === 'user' ? 'userMessage' : 'assistantMessage'}`}>
+              <div
+                className={`messageBubble ${msg.role === 'user' ? 'userMessage' : 'assistantMessage'}`}
+              >
                 <div className="messageContent">{msg.content}</div>
                 <div className="messageTime">{formatTime(msg.timestamp)}</div>
               </div>
@@ -166,9 +192,9 @@ export const Chatbot: React.FC = () => {
             placeholder="Ask me anything..."
             disabled={loading}
           />
-          <button 
-            className={`sendButton ${(!loading && input.trim()) ? 'sendButtonActive' : ''}`}
-            onClick={sendMessage} 
+          <button
+            className={`sendButton ${!loading && input.trim() ? 'sendButtonActive' : ''}`}
+            onClick={sendMessage}
             disabled={loading || !input.trim()}
             aria-label="Send message"
           >

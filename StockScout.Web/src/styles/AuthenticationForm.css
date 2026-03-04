@@ -65,26 +65,26 @@
   transition: all 0.2s ease !important;
 }
 
-.authForm button[appearance="primary"] {
+.authForm button[appearance='primary'] {
   background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%) !important;
   border: none !important;
 }
 
-.authForm button[appearance="primary"]:hover:not(:disabled) {
+.authForm button[appearance='primary']:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 120, 212, 0.35);
 }
 
-.authForm button[appearance="primary"]:active:not(:disabled) {
+.authForm button[appearance='primary']:active:not(:disabled) {
   transform: translateY(0);
 }
 
 /* Toggle Link */
-.authForm button[appearance="subtle"] {
+.authForm button[appearance='subtle'] {
   color: #0078d4;
 }
 
-.authForm button[appearance="subtle"]:hover {
+.authForm button[appearance='subtle']:hover {
   background: rgba(0, 120, 212, 0.08) !important;
 }
 

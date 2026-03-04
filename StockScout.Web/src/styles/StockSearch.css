@@ -8,12 +8,18 @@
   gap: 1.25rem;
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.03);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
 }
 
 .searchContainer:hover {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .searchContainer h2 {
@@ -41,7 +47,9 @@
   flex: 1;
   border-radius: 12px !important;
   border: 2px solid #e5e5e5 !important;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease !important;
 }
 
 .searchFormRow input:focus {
@@ -53,7 +61,9 @@
   border-radius: 12px !important;
   padding: 0 1.5rem !important;
   font-weight: 600 !important;
-  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease !important;
 }
 
 .searchFormRow button:hover:not(:disabled) {
@@ -70,11 +80,11 @@
   .searchContainer {
     padding: 1.25rem;
   }
-  
+
   .searchFormRow {
     flex-direction: column;
   }
-  
+
   .searchFormRow input,
   .searchFormRow button {
     width: 100%;
