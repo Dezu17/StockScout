@@ -33,6 +33,24 @@ public class AlphaVantageClientTests
         }
         """;
 
+    private const string ValidSymbolSearchJson = """
+        {
+          "bestMatches": [
+            {
+              "1. symbol": "MSFT",
+              "2. name": "Microsoft Corporation",
+              "3. type": "Equity",
+              "4. region": "United States",
+              "5. marketOpen": "09:30",
+              "6. marketClose": "16:00",
+              "7. timezone": "UTC-04",
+              "8. currency": "USD",
+              "9. matchScore": "1.0000"
+            }
+          ]
+        }
+        """;
+
     public AlphaVantageClientTests()
     {
         _httpClientFactoryMock = new Mock<IHttpClientFactory>();
@@ -55,16 +73,40 @@ public class AlphaVantageClientTests
 
     private void SetupHttpResponse(HttpStatusCode statusCode, string content)
     {
+        SetupHttpResponses(new Dictionary<string, (HttpStatusCode, string)>
+        {
+            { "GLOBAL_QUOTE", (statusCode, content) },
+            { "SYMBOL_SEARCH", (HttpStatusCode.OK, ValidSymbolSearchJson) }
+        });
+    }
+
+    private void SetupHttpResponses(Dictionary<string, (HttpStatusCode StatusCode, string Content)> responses)
+    {
         var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
         handlerMock.Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
                 ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(new HttpResponseMessage
+            .ReturnsAsync((HttpRequestMessage request, CancellationToken _) =>
             {
-                StatusCode = statusCode,
-                Content = new StringContent(content)
+                var url = request.RequestUri?.ToString() ?? "";
+                foreach (var kvp in responses)
+                {
+                    if (url.Contains($"function={kvp.Key}"))
+                    {
+                        return new HttpResponseMessage
+                        {
+                            StatusCode = kvp.Value.StatusCode,
+                            Content = new StringContent(kvp.Value.Content)
+                        };
+                    }
+                }
+                return new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Content = new StringContent("{}")
+                };
             });
 
         var httpClient = new HttpClient(handlerMock.Object);
@@ -136,5 +178,33 @@ public class AlphaVantageClientTests
         var result = await client.GetQuoteAsync("INVALID");
 
         result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetQuoteAsync_IncludesCurrency_WhenSymbolSearchSucceeds()
+    {
+        SetupHttpResponse(HttpStatusCode.OK, ValidQuoteJson);
+        var client = CreateClient();
+
+        var result = await client.GetQuoteAsync("MSFT");
+
+        result.Should().NotBeNull();
+        result!.Currency.Should().Be("USD");
+    }
+
+    [Fact]
+    public async Task GetSymbolCurrencyAsync_ReturnsNull_WhenNoMatches()
+    {
+        SetupHttpResponses(new Dictionary<string, (HttpStatusCode, string)>
+        {
+            { "GLOBAL_QUOTE", (HttpStatusCode.OK, ValidQuoteJson) },
+            { "SYMBOL_SEARCH", (HttpStatusCode.OK, """{ "bestMatches": [] }""") }
+        });
+        var client = CreateClient();
+
+        var result = await client.GetQuoteAsync("UNKNOWN");
+
+        result.Should().NotBeNull();
+        result!.Currency.Should().BeNull();
     }
 }
