@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { DataTrending24Filled, WeatherMoon24Regular, WeatherSunny24Regular } from '@fluentui/react-icons';
+import {
+  DataTrending24Filled,
+  WeatherMoon24Regular,
+  WeatherSunny24Regular,
+} from '@fluentui/react-icons';
 import { StockSearch } from './StockSearch';
 import { MarketNews } from './MarketNews';
 import { WatchlistPanel } from './WatchlistPanel';
