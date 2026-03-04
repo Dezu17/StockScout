@@ -42,7 +42,7 @@ export const App: React.FC = () => {
             }
           />
         </Routes>
-        <Chatbot />
+        {user && <Chatbot />}
       </Router>
     </FluentProvider>
   );
