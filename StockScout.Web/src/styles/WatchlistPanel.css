@@ -1,29 +1,99 @@
+/* Watchlist Panel */
 .watchlistPanel {
-  min-width: 500px;
-  min-height: 400px;
-  padding: 1.5rem;
+  width: 100%;
+  max-width: 520px;
+  min-height: 420px;
+  padding: 1.75rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.3s ease;
 }
 
+.watchlistPanel:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.watchlistPanel h2 {
+  margin: 0;
+  color: #1a1a1a;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.watchlistPanel h2::before {
+  content: '⭐';
+  font-size: 1.25rem;
+}
+
+/* Watchlist Items */
 .watchlistItems {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .watchlistItem {
-  padding: 0.75rem 1rem;
-  background-color: #f5f5f5;
-  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(145deg, #f8f9fa 0%, #ffffff 100%);
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
+.watchlistItem:hover {
+  background: linear-gradient(145deg, #f0f4f8 0%, #ffffff 100%);
+  border-color: #0078d4;
+  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.1);
+  transform: translateX(4px);
+}
+
+/* Empty State */
 .watchlistEmpty {
-  color: #666;
+  color: #605e5c;
   text-align: center;
-  padding: 2rem;
+  padding: 3rem 2rem;
+  background: linear-gradient(145deg, #f8f9fa 0%, #ffffff 100%);
+  border: 2px dashed #d2d0ce;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.watchlistEmpty::before {
+  content: '📊';
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Show More/Less Button */
+.watchlistPanel > button {
+  align-self: center;
+  border-radius: 20px !important;
+  padding: 0.5rem 1.5rem !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.watchlistPanel > button:hover {
+  background: #f3f2f1;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .watchlistPanel {
+    padding: 1.25rem;
+    min-height: auto;
+  }
 }

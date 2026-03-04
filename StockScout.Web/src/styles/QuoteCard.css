@@ -1,16 +1,100 @@
+/* Quote Card */
 .quoteCard {
-  max-width: 420px;
+  max-width: 440px;
+  width: 100%;
+  padding: 1.5rem;
+  background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
+  border-radius: 16px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  animation: cardSlideIn 0.4s ease;
 }
 
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.quoteCard:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Symbol Header */
+.quoteCard header {
+  margin-bottom: 0.5rem;
+}
+
+.quoteCard header strong {
+  font-size: 1.25rem;
+  color: #1a1a1a;
+  letter-spacing: 0.5px;
+}
+
+/* Price Display */
 .quotePrice {
-  font-size: 2rem;
-  font-weight: 600;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -1px;
+  margin: 0.5rem 0;
+  font-variant-numeric: tabular-nums;
 }
 
+/* Change Indicators */
 .quoteChangePositive {
   color: #107c10;
+  background: linear-gradient(135deg, rgba(16, 124, 16, 0.1) 0%, rgba(16, 124, 16, 0.05) 100%);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .quoteChangeNegative {
   color: #d13438;
+  background: linear-gradient(135deg, rgba(209, 52, 56, 0.1) 0%, rgba(209, 52, 56, 0.05) 100%);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Stats Grid */
+.quoteCard p {
+  color: #605e5c;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Divider */
+.quoteCard hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #e0e0e0, transparent);
+  margin: 1rem 0;
+}
+
+/* Action Button */
+.quoteCard button {
+  width: 100%;
+  margin-top: 1rem;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+.quoteCard button:hover:not(:disabled) {
+  transform: translateY(-1px);
 }
