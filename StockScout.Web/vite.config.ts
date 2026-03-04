@@ -15,6 +15,8 @@ export default defineConfig(({ mode }) => {
     define: {
       __API_BASE__: JSON.stringify(env.VITE_API_BASE || 'http://localhost:5005/api'),
       __MARKETAUX_API_KEY__: JSON.stringify(env.VITE_MARKETAUX_API_KEY || ''),
+      // Explicitly expose Gemini API key
+      'import.meta.env.VITE_GEMINI_API_KEY': JSON.stringify(env.VITE_GEMINI_API_KEY),
       // Explicitly expose Firebase environment variables
       'import.meta.env.VITE_FIREBASE_API_KEY': JSON.stringify(env.VITE_FIREBASE_API_KEY),
       'import.meta.env.VITE_FIREBASE_AUTH_DOMAIN': JSON.stringify(env.VITE_FIREBASE_AUTH_DOMAIN),
