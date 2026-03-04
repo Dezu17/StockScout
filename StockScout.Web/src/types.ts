@@ -9,6 +9,7 @@ export interface QuoteDto {
   changePercent?: string;
   volume?: number;
   latestTradingDay?: string;
+  currency?: string;
 }
 
 export interface WatchlistItemDto {

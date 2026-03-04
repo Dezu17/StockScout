@@ -10,5 +10,6 @@ public record QuoteDto(
     decimal? Change,
     string? ChangePercent,
     long? Volume,
-    DateTime? LatestTradingDay
+    DateTime? LatestTradingDay,
+    string? Currency = null
 );
