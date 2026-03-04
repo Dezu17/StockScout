@@ -75,7 +75,9 @@
   font-weight: 800;
   letter-spacing: -1px;
   margin: 0;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25), 0 4px 24px rgba(0, 0, 0, 0.15);
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.25),
+    0 4px 24px rgba(0, 0, 0, 0.15);
 }
 
 /* Tagline */
@@ -121,7 +123,7 @@
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .leftPanel,
   .rightPanel {
     flex: none;
@@ -133,22 +135,22 @@
   .dashboardContainer {
     padding: 1.5rem 1rem;
   }
-  
+
   .dashboardLogo {
     width: 52px;
     height: 52px;
     border-radius: 12px;
   }
-  
+
   .dashboardLogo svg {
     width: 28px;
     height: 28px;
   }
-  
+
   .dashboardTitle {
     font-size: 2rem;
   }
-  
+
   .dashboardTagline {
     font-size: 0.9rem;
     letter-spacing: 1px;
