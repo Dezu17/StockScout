@@ -40,7 +40,6 @@ public class AlphaVantageClient
             // Fetch and add currency
             var stockCurrency = await GetSymbolCurrencyAsync(symbol, ct);
             dto = dto with { Currency = stockCurrency };
-            
             _cache.Set(
                 cacheKey,
                 dto,
@@ -72,7 +71,7 @@ public class AlphaVantageClient
         // Find exact match or use first result
         foreach (var match in matches.EnumerateArray())
         {
-            if (match.TryGetProperty("1. symbol", out var sym) && 
+            if (match.TryGetProperty("1. symbol", out var sym) &&
                 sym.GetString()?.Equals(symbol, StringComparison.OrdinalIgnoreCase) == true)
             {
                 if (match.TryGetProperty("8. currency", out var curr))
