@@ -7,23 +7,20 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  background: #ffffff;
+  background: var(--bg-card);
   border-radius: 16px;
-  box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
   transition: box-shadow 0.3s ease;
 }
 
 .watchlistPanel:hover {
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-lg);
 }
 
 .watchlistPanel h2 {
   margin: 0;
-  color: #1a1a1a;
+  color: var(--text-primary);
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -47,27 +44,27 @@
 
 .watchlistItem {
   padding: 1rem 1.25rem;
-  background: linear-gradient(145deg, #f8f9fa 0%, #ffffff 100%);
-  border: 1px solid #e8e8e8;
+  background: linear-gradient(145deg, var(--bg-card-hover) 0%, var(--bg-card) 100%);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .watchlistItem:hover {
-  background: linear-gradient(145deg, #f0f4f8 0%, #ffffff 100%);
-  border-color: #0078d4;
+  background: var(--bg-card-hover);
+  border-color: var(--border-color-hover);
   box-shadow: 0 4px 12px rgba(0, 120, 212, 0.1);
   transform: translateX(4px);
 }
 
 /* Empty State */
 .watchlistEmpty {
-  color: #605e5c;
+  color: var(--text-secondary);
   text-align: center;
   padding: 3rem 2rem;
-  background: linear-gradient(145deg, #f8f9fa 0%, #ffffff 100%);
-  border: 2px dashed #d2d0ce;
+  background: linear-gradient(145deg, var(--bg-card-hover) 0%, var(--bg-card) 100%);
+  border: 2px dashed var(--border-color);
   border-radius: 12px;
   display: flex;
   flex-direction: column;

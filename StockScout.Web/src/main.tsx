@@ -1,12 +1,13 @@
 import { createRoot } from 'react-dom/client';
-import { FluentProvider, webLightTheme } from '@fluentui/react-components';
 import { AuthProvider } from './AuthenticationContext';
+import { ThemeProvider } from './ThemeContext';
 import { App } from './App';
+import './styles/themes.css';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
-  <FluentProvider theme={webLightTheme}>
+  <ThemeProvider>
     <AuthProvider>
       <App />
     </AuthProvider>
-  </FluentProvider>
+  </ThemeProvider>
 );
