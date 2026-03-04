@@ -1,9 +1,24 @@
 # StockScout
 
-A full-stack project for a stock dashboard using:
+A full-stack stock dashboard application for tracking stocks, viewing market news, and getting AI-powered insights.
 
-- **Backend**: .NET 8 minimal API (C#) hitting Alpha Vantage
-- **Frontend**: React + TypeScript + Vite + Fluent UI v9
+## Features
+
+- **Stock Quote Lookup** - Search any stock symbol and view real-time price data, daily changes, and trading volume
+- **Personal Watchlist** - Save your favorite stocks and track them in one place
+- **Market News** - Stay updated with the latest news for your watched stocks
+- **AI Chatbot** - Get stock insights and answers powered by Google Gemini AI
+- **Dark Mode** - Toggle between light and dark themes with preference persistence
+- **Firebase Authentication** - Secure user accounts with email/password login
+- **Modern UI** - Clean, responsive design with smooth animations and Fluent UI components
+
+## Tech Stack
+
+- **Backend**: .NET 8 Minimal API (C#) with PostgreSQL
+- **Frontend**: React 18 + TypeScript + Vite + Fluent UI v9
+- **Authentication**: Firebase Auth
+- **AI**: Google Gemini API
+- **APIs**: Alpha Vantage (stocks), MarketAux (news)
 
 ## Quick Start
 
@@ -108,16 +123,6 @@ Additionaly, the app includes an AI chatbot powered by Google Gemini. To enable 
    ```
 
 The chatbot icon appears in the bottom-right corner of the app.
-
-### 5. Try It
-1. On the authentication page, create a new account or log in with an existing account.
-2. You'll see the **Dashboard** with two panels:
-   - **Left Panel**: 
-     - **Quote Lookup**: Enter a stock symbol (e.g. MSFT, AAPL) and click "Get Quote" to view stock data. Use the "Add to My Watchlist" button to save stocks.
-     - **Market News**: Displays latest market news (planned for future).
-   - **Right Panel**: 
-     - **My Watchlist**: Shows your saved stocks as QuoteCards. Click "Remove from My Watchlist" to remove items.
-3. **AI Chatbot**: Click the speech bubble icon (bottom-right corner) to open the Gemini-powered chatbot for stock insights.
 
 
 ## Continuous Integration (CI)
