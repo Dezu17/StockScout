@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Title1 } from '@fluentui/react-components';
+import { DataTrending24Filled } from '@fluentui/react-icons';
 import { StockSearch } from './StockSearch';
 import { MarketNews } from './MarketNews';
 import { WatchlistPanel } from './WatchlistPanel';
@@ -47,7 +47,13 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="dashboardContainer">
-      <Title1>StockScout</Title1>
+      <header className="dashboardHeader">
+        <div className="dashboardLogo">
+          <DataTrending24Filled />
+        </div>
+        <h1 className="dashboardTitle">StockScout</h1>
+        <p className="dashboardTagline">Track. Analyze. Invest.</p>
+      </header>
       <div className="dashboardLayout">
         <div className="leftPanel">
           <StockSearch onQuoteAdded={handleQuoteAdded} />

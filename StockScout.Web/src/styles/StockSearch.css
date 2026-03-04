@@ -1,13 +1,82 @@
+/* Search Container */
 .searchContainer {
-  width: 500px;
-  padding: 1.5rem;
+  width: 100%;
+  max-width: 520px;
+  padding: 1.75rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
+.searchContainer:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.searchContainer h2 {
+  margin: 0;
+  color: #1a1a1a;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.searchContainer h2::before {
+  content: '🔍';
+  font-size: 1.25rem;
+}
+
+/* Search Form */
 .searchFormRow {
   display: flex;
   gap: 0.75rem;
   align-items: center;
+}
+
+.searchFormRow input {
+  flex: 1;
+  border-radius: 12px !important;
+  border: 2px solid #e5e5e5 !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.searchFormRow input:focus {
+  border-color: #0078d4 !important;
+  box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1) !important;
+}
+
+.searchFormRow button {
+  border-radius: 12px !important;
+  padding: 0 1.5rem !important;
+  font-weight: 600 !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.searchFormRow button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+}
+
+.searchFormRow button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .searchContainer {
+    padding: 1.25rem;
+  }
+  
+  .searchFormRow {
+    flex-direction: column;
+  }
+  
+  .searchFormRow input,
+  .searchFormRow button {
+    width: 100%;
+  }
 }
