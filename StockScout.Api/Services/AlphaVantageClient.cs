@@ -37,6 +37,10 @@ public class AlphaVantageClient
         var dto = QuoteMapper.MapFromGlobalQuote(doc);
         if (dto is not null)
         {
+            // Fetch and add currency
+            var stockCurrency = await GetSymbolCurrencyAsync(symbol, ct);
+            dto = dto with { Currency = stockCurrency };
+            
             _cache.Set(
                 cacheKey,
                 dto,
@@ -46,5 +50,62 @@ public class AlphaVantageClient
                 });
         }
         return dto;
+    }
+
+    public async Task<string?> GetSymbolCurrencyAsync(string symbol, CancellationToken ct = default)
+    {
+        var cacheKey = $"currency:{symbol}";
+        if (_cache.TryGetValue(cacheKey, out string? cachedCurrency) && cachedCurrency is not null)
+            return cachedCurrency;
+
+        var url = $"{_options.BaseUrl}/query?function=SYMBOL_SEARCH&keywords={Uri.EscapeDataString(symbol)}&apikey={_options.ApiKey}";
+        var client = _httpClientFactory.CreateClient();
+        using var resp = await client.GetAsync(url, ct);
+        if (!resp.IsSuccessStatusCode) return null;
+
+        await using var s = await resp.Content.ReadAsStreamAsync(ct);
+        using var doc = await JsonDocument.ParseAsync(s, cancellationToken: ct);
+
+        if (!doc.RootElement.TryGetProperty("bestMatches", out var matches) || matches.GetArrayLength() == 0)
+            return null;
+
+        // Find exact match or use first result
+        foreach (var match in matches.EnumerateArray())
+        {
+            if (match.TryGetProperty("1. symbol", out var sym) && 
+                sym.GetString()?.Equals(symbol, StringComparison.OrdinalIgnoreCase) == true)
+            {
+                if (match.TryGetProperty("8. currency", out var curr))
+                {
+                    var currency = curr.GetString();
+                    if (!string.IsNullOrEmpty(currency))
+                    {
+                        // Cache currency for 24 hours (rarely changes)
+                        _cache.Set(cacheKey, currency, new MemoryCacheEntryOptions
+                        {
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24)
+                        });
+                        return currency;
+                    }
+                }
+            }
+        }
+
+        // Fallback to first match if no exact match found
+        var firstMatch = matches[0];
+        if (firstMatch.TryGetProperty("8. currency", out var firstCurr))
+        {
+            var currency = firstCurr.GetString();
+            if (!string.IsNullOrEmpty(currency))
+            {
+                _cache.Set(cacheKey, currency, new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24)
+                });
+                return currency;
+            }
+        }
+
+        return null;
     }
 }

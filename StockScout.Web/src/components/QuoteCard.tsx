@@ -20,6 +20,26 @@ export const QuoteCard: React.FC<Props> = ({ quote, onQuoteAdded, onSymbolRemove
   const isUp = change >= 0;
   const changeClass = isUp ? 'quoteChangePositive' : 'quoteChangeNegative';
 
+  // Map currency code to symbol
+  const getCurrencySymbol = (code?: string): string => {
+    const symbolMap: Record<string, string> = {
+      USD: '$',
+      EUR: '€',
+      GBP: '£',
+      JPY: '¥',
+      CNY: '¥',
+      CAD: 'C$',
+      AUD: 'A$',
+      CHF: 'CHF',
+      HKD: 'HK$',
+      INR: '₹',
+      KRW: '₩',
+      SGD: 'S$',
+    };
+    return code ? (symbolMap[code] ?? code) : '$';
+  };
+  const currencySymbol = getCurrencySymbol(quote.currency);
+
   // Check if the symbol is in the user's watchlist on mount
   useEffect(() => {
     const checkWatchlist = async () => {
@@ -63,7 +83,10 @@ export const QuoteCard: React.FC<Props> = ({ quote, onQuoteAdded, onSymbolRemove
           quote.latestTradingDay && `As of ${new Date(quote.latestTradingDay).toLocaleDateString()}`
         }
       />
-      <div className="quotePrice">{quote.price.toFixed(2)}</div>
+      <div className="quotePrice">
+        <span className="currencySymbol">{currencySymbol}</span>
+        {quote.price.toFixed(2)}
+      </div>
       <Body1>
         Open {quote.open?.toFixed(2) ?? '-'} · High {quote.high?.toFixed(2) ?? '-'} · Low{' '}
         {quote.low?.toFixed(2) ?? '-'}

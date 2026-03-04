@@ -46,6 +46,16 @@
   letter-spacing: -1px;
   margin: 0.5rem 0;
   font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: baseline;
+  gap: 0.15rem;
+}
+
+.currencySymbol {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  opacity: 0.8;
 }
 
 /* Change Indicators */
